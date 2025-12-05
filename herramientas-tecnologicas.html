@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 2: Herramientas Tecnológicas - SegurSenior</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 50%, #5b21b6 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(124, 58, 237, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+            color: white;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        header button {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: white;
+            font-size: 24px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        header button:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+        }
+
+        header h1 {
+            flex: 1;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #7c3aed, #5b21b6);
+            width: 8.3%;
+            transition: width 0.5s ease;
+        }
+
+        .content {
+            padding: 40px;
+            min-height: 500px;
+        }
+
+        .panel {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .panel h2 {
+            color: #7c3aed;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .lesson-content {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .lesson-content p {
+            margin-bottom: 20px;
+        }
+
+        .lesson-content .emoji {
+            font-size: 40px;
+            margin: 20px 0;
+        }
+
+        .question {
+            font-size: 20px;
+            font-weight: bold;
+            color: #7c3aed;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option {
+            padding: 18px;
+            border: 3px solid #7c3aed;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+            background: white;
+            color: #333;
+        }
+
+        .option:hover {
+            background: #7c3aed;
+            color: white;
+            transform: translateX(10px);
+        }
+
+        .option.selected {
+            background: #7c3aed;
+            color: white;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #7c3aed, #5b21b6);
+            color: white;
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-next:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* MEMORY GAME */
+        .memory-game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 120px);
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .memory-card {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: 3px solid #5b21b6;
+            user-select: none;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+        }
+
+        .memory-card:hover:not(.flipped) {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(124, 58, 237, 0.5);
+        }
+
+        .memory-card.flipped {
+            background: white;
+            color: #7c3aed;
+            font-size: 32px;
+        }
+
+        .memory-card.matched {
+            background: #10b981;
+            color: white;
+            cursor: default;
+        }
+
+        .game-info {
+            font-size: 18px;
+            font-weight: bold;
+            color: #7c3aed;
+            text-align: center;
+        }
+
+        .game-title {
+            font-size: 24px;
+            color: #7c3aed;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 20px;
+            }
+
+            .panel h2 {
+                font-size: 22px;
+            }
+
+            .memory-grid {
+                grid-template-columns: repeat(3, 100px);
+            }
+
+            .memory-card {
+                width: 100px;
+                height: 100px;
+                font-size: 18px;
+            }
+
+            .question {
+                font-size: 16px;
+            }
+
+            .option {
+                font-size: 16px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button onclick="goBack()">← Atrás</button>
+            <h1>💻 Herramientas Tecnológicas</h1>
+        </header>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content">
+            <!-- PANEL 1: LECCIONES -->
+            <div class="panel active" id="panel1">
+                <h2>🎓 Módulo 2: Herramientas Tecnológicas</h2>
+                <div class="lesson-content">
+                    <div class="emoji">📱</div>
+                    <h3 style="color: #7c3aed; margin-bottom: 20px;">Lección 1: Tecnología Accesible para Mayores</h3>
+                    <p>La tecnología está diseñada para facilitar tu vida:</p>
+                    <p>✓ Smartphones con pantallas grandes y letra legible<br>
+                    ✓ Botones grandes y fáciles de presionar<br>
+                    ✓ Aplicaciones con interfaz simple<br>
+                    ✓ Asistentes de voz para controlar dispositivos<br>
+                    ✓ Configuración de accesibilidad disponible</p>
+
+                    <div class="emoji">🛠️</div>
+                    <h3 style="color: #7c3aed; margin-bottom: 20px;">Lección 2: Apps Útiles para tu Trabajo</h3>
+                    <p>Aplicaciones que pueden mejorar tu productividad:</p>
+                    <p>✓ WhatsApp: comunicación con clientes y familia<br>
+                    ✓ Google Maps: navegación y ubicación<br>
+                    ✓ Google Calendar: organización de citas<br>
+                    ✓ WhatsApp Business: para pequeños negocios<br>
+                    ✓ Google Drive: almacenar documentos de forma segura</p>
+
+                    <div class="emoji">🔒</div>
+                    <h3 style="color: #7c3aed; margin-bottom: 20px;">Lección 3: Seguridad en Línea</h3>
+                    <p>Protege tu información personal:</p>
+                    <p>✓ Usa contraseñas fuertes y únicas<br>
+                    ✓ Nunca compartas datos bancarios por chat<br>
+                    ✓ Desconfía de enlaces sospechosos<br>
+                    ✓ Mantén actualizados tus dispositivos<br>
+                    ✓ Crea copias de seguridad de tus datos importantes</p>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(2)">Siguiente →</button>
+                </div>
+            </div>
+
+            <!-- PANEL 2-11: PREGUNTAS -->
+            <div class="panel" id="panel2">
+                <div class="question">❓ Pregunta 1: ¿Cuál es una característica de tecnología accesible?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Pantalla pequeña y difícil de leer</div>
+                    <div class="option" onclick="selectAnswer(this)">Pantallas grandes con letra legible</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo para personas jóvenes</div>
+                    <div class="option" onclick="selectAnswer(this)">Muy cara y complicada</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(1)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(3)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel3">
+                <div class="question">❓ Pregunta 2: ¿Para qué sirve WhatsApp principalmente?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Comprar ropa en línea</div>
+                    <div class="option" onclick="selectAnswer(this)">Comunicación con clientes y familia</div>
+                    <div class="option" onclick="selectAnswer(this)">Ver televisión</div>
+                    <div class="option" onclick="selectAnswer(this)">Jugar videojuegos</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(2)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(4)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel4">
+                <div class="question">❓ Pregunta 3: ¿Cuál es una medida de seguridad en línea?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Compartir contraseñas con amigos</div>
+                    <div class="option" onclick="selectAnswer(this)">Usar contraseñas fuertes y únicas</div>
+                    <div class="option" onclick="selectAnswer(this)">No actualizar nunca</div>
+                    <div class="option" onclick="selectAnswer(this)">Abrir todos los enlaces desconocidos</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(3)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(5)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel5">
+                <div class="question">❓ Pregunta 4: ¿Qué app es útil para organizar tus citas?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Google Calendar</div>
+                    <div class="option" onclick="selectAnswer(this)">Instagram</div>
+                    <div class="option" onclick="selectAnswer(this)">TikTok</div>
+                    <div class="option" onclick="selectAnswer(this)">Twitter</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(4)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(6)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel6">
+                <div class="question">❓ Pregunta 5: ¿Nunca debes compartir qué tipo de datos por chat?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Tu nombre completo</div>
+                    <div class="option" onclick="selectAnswer(this)">Tu número de teléfono</div>
+                    <div class="option" onclick="selectAnswer(this)">Datos bancarios y códigos</div>
+                    <div class="option" onclick="selectAnswer(this)">Tu dirección</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(5)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(7)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel7">
+                <div class="question">❓ Pregunta 6: ¿Qué app puedes usar para guardar documentos en la nube?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Google Drive</div>
+                    <div class="option" onclick="selectAnswer(this)">WhatsApp</div>
+                    <div class="option" onclick="selectAnswer(this)">YouTube</div>
+                    <div class="option" onclick="selectAnswer(this)">Ninguna</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(6)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(8)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel8">
+                <div class="question">❓ Pregunta 7: ¿Para qué sirve Google Maps?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Navegación y ubicación</div>
+                    <div class="option" onclick="selectAnswer(this)">Ver películas</div>
+                    <div class="option" onclick="selectAnswer(this)">Comprar comida</div>
+                    <div class="option" onclick="selectAnswer(this)">Jugar juegos</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(7)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(9)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel9">
+                <div class="question">❓ Pregunta 8: ¿Qué es WhatsApp Business?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Una red social</div>
+                    <div class="option" onclick="selectAnswer(this)">Para pequeños negocios y comunicación profesional</div>
+                    <div class="option" onclick="selectAnswer(this)">Un banco en línea</div>
+                    <div class="option" onclick="selectAnswer(this)">Un videojuego</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(8)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(10)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel10">
+                <div class="question">❓ Pregunta 9: ¿Es importante hacer copias de seguridad?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">No, nunca es necesario</div>
+                    <div class="option" onclick="selectAnswer(this)">Sí, para proteger datos importantes</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo si tienes dinero</div>
+                    <div class="option" onclick="selectAnswer(this)">Una vez cada 10 años</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(9)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(11)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel11">
+                <div class="question">❓ Pregunta 10: ¿Qué debes hacer con dispositivos desactualizados?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Mantenerlos sin actualizar por seguridad</div>
+                    <div class="option" onclick="selectAnswer(this)">Actualizarlos regularmente por seguridad</div>
+                    <div class="option" onclick="selectAnswer(this)">Nunca usarlos</div>
+                    <div class="option" onclick="selectAnswer(this)">Darlos a desconocidos</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(10)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(12)">Siguiente →</button>
+                </div>
+            </div>
+
+            <!-- PANEL 12: JUEGO - MEMORY GAME -->
+            <div class="panel" id="panel12">
+                <div class="game-title">🎮 Juego Final: Memoria - Apps y Usos</div>
+                <p style="text-align: center; margin-bottom: 20px; font-size: 16px;">Empareja cada app con su uso. Haz clic en las tarjetas para voltearlas.</p>
+                
+                <div style="text-align: center;">
+                    <div class="game-info" id="matchesInfo">Emparejamientos: 0/4</div>
+                    <div class="memory-grid" id="memoryGrid"></div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(11)">← Anterior</button>
+                    <button class="btn-next" onclick="completeModuleWithGame()">Completar Módulo ✓</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPanel = 1;
+        let selectedAnswers = {};
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+
+        const memoryPairs = [
+            { emoji: '💬', label: 'Comunicación', text: 'WhatsApp' },
+            { emoji: '🔍', label: 'Búsqueda', text: 'Google' },
+            { emoji: '📅', label: 'Calendario', text: 'Google Calendar' },
+            { emoji: '📍', label: 'Navegación', text: 'Google Maps' },
+            { emoji: '💬', label: 'Comunicación', text: 'WhatsApp' },
+            { emoji: '🔍', label: 'Búsqueda', text: 'Google' },
+            { emoji: '📅', label: 'Calendario', text: 'Google Calendar' },
+            { emoji: '📍', label: 'Navegación', text: 'Google Maps' }
+        ];
+
+        function goBack() {
+            if (confirm('¿Deseas volver atrás y perder el progreso?')) {
+                window.history.back();
+            }
+        }
+
+        function goToPanel(panelNumber) {
+            document.getElementById(`panel${currentPanel}`).classList.remove('active');
+            currentPanel = panelNumber;
+            document.getElementById(`panel${currentPanel}`).classList.add('active');
+            updateProgress();
+            
+            if (currentPanel === 12) {
+                initMemoryGame();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateProgress() {
+            const progress = (currentPanel / 12) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function selectAnswer(element) {
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedAnswers[currentPanel] = element.textContent;
+        }
+
+        function initMemoryGame() {
+            const grid = document.getElementById('memoryGrid');
+            grid.innerHTML = '';
+            memoryCards = [...memoryPairs].sort(() => Math.random() - 0.5);
+            matchedPairs = 0;
+            flippedCards = [];
+
+            memoryCards.forEach((card, index) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = 'memory-card';
+                cardEl.dataset.index = index;
+                cardEl.dataset.pair = JSON.stringify({ emoji: card.emoji, label: card.label });
+                cardEl.textContent = '?';
+                cardEl.onclick = () => flipCard(cardEl, index);
+                grid.appendChild(cardEl);
+            });
+        }
+
+        function flipCard(cardEl, index) {
+            if (cardEl.classList.contains('flipped') || cardEl.classList.contains('matched') || flippedCards.length >= 2) {
+                return;
+            }
+
+            cardEl.classList.add('flipped');
+            cardEl.textContent = memoryCards[index].emoji;
+            flippedCards.push({ el: cardEl, index: index, data: memoryCards[index] });
+
+            if (flippedCards.length === 2) {
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            
+            if (card1.data.label === card2.data.label) {
+                card1.el.classList.add('matched');
+                card2.el.classList.add('matched');
+                matchedPairs++;
+                document.getElementById('matchesInfo').textContent = `Emparejamientos: ${matchedPairs}/4`;
+                flippedCards = [];
+            } else {
+                setTimeout(() => {
+                    card1.el.classList.remove('flipped');
+                    card2.el.classList.remove('flipped');
+                    card1.el.textContent = '?';
+                    card2.el.textContent = '?';
+                    flippedCards = [];
+                }, 800);
+            }
+        }
+
+        function completeModuleWithGame() {
+            if (matchedPairs >= 3) {
+                const currentUser = localStorage.getItem('currentUser');
+                if (currentUser) {
+                    const users = JSON.parse(localStorage.getItem('users'));
+                    const user = users[currentUser];
+                    
+                    user.points = (user.points || 0) + 100;
+                    
+                    if (!user.completedModules) {
+                        user.completedModules = [];
+                    }
+                    if (!user.completedModules.includes('Herramientas tecnológicas')) {
+                        user.completedModules.push('Herramientas tecnológicas');
+                    }
+                    
+                    users[currentUser] = user;
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+                
+                alert('🎉 ¡Excelente! Has completado el módulo de Herramientas Tecnológicas.\n\nRecuerda: La tecnología es tu aliada para mejorar tu trabajo y comunicación.\n\n+100 puntos ganados');
+                window.location.href = 'index.html';
+            } else {
+                alert('Sigue emparejando tarjetas para completar el módulo.');
+            }
+        }
+
+        updateProgress();
+    </script>
+</body>
+</html>

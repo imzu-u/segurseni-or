@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 4: Apoyo Emocional - SegurSenior</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #059669 0%, #047857 50%, #065f46 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(5, 150, 105, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #059669 0%, #065f46 100%);
+            color: white;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        header button {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: white;
+            font-size: 24px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        header button:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+        }
+
+        header h1 {
+            flex: 1;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #059669, #065f46);
+            width: 8.3%;
+            transition: width 0.5s ease;
+        }
+
+        .content {
+            padding: 40px;
+            min-height: 500px;
+        }
+
+        .panel {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .panel h2 {
+            color: #059669;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .lesson-content {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .lesson-content p {
+            margin-bottom: 20px;
+        }
+
+        .lesson-content .emoji {
+            font-size: 40px;
+            margin: 20px 0;
+        }
+
+        .question {
+            font-size: 20px;
+            font-weight: bold;
+            color: #059669;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option {
+            padding: 18px;
+            border: 3px solid #059669;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+            background: white;
+            color: #333;
+        }
+
+        .option:hover {
+            background: #059669;
+            color: white;
+            transform: translateX(10px);
+        }
+
+        .option.selected {
+            background: #059669;
+            color: white;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #059669, #065f46);
+            color: white;
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(5, 150, 105, 0.4);
+        }
+
+        .btn-next:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* WORD SEARCH GAME */
+        .word-search-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .word-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 50px);
+            gap: 8px;
+            margin: 30px 0;
+        }
+
+        .letter {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #059669;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            background: white;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .letter:hover {
+            background: #d1fae5;
+            transform: scale(1.1);
+        }
+
+        .letter.found {
+            background: #059669;
+            color: white;
+            font-weight: bold;
+        }
+
+        .word-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .word-item {
+            padding: 12px;
+            border: 2px solid #059669;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            background: white;
+            transition: all 0.3s;
+        }
+
+        .word-item.found {
+            background: #059669;
+            color: white;
+            text-decoration: line-through;
+        }
+
+        .game-title {
+            font-size: 24px;
+            color: #059669;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 20px;
+            }
+
+            .panel h2 {
+                font-size: 22px;
+            }
+
+            .word-grid {
+                grid-template-columns: repeat(6, 40px);
+            }
+
+            .letter {
+                width: 40px;
+                height: 40px;
+                font-size: 14px;
+            }
+
+            .question {
+                font-size: 16px;
+            }
+
+            .option {
+                font-size: 16px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button onclick="goBack()">← Atrás</button>
+            <h1>❤️ Apoyo Emocional</h1>
+        </header>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content">
+            <!-- PANEL 1: LECCIONES -->
+            <div class="panel active" id="panel1">
+                <h2>🎓 Módulo 4: Apoyo Emocional</h2>
+                <div class="lesson-content">
+                    <div class="emoji">💝</div>
+                    <h3 style="color: #059669; margin-bottom: 20px;">Lección 1: Importancia del Apoyo Emocional</h3>
+                    <p>Tu salud mental es tan importante como tu salud física:</p>
+                    <p>✓ El apoyo emocional reduce estrés y ansiedad<br>
+                    ✓ Mejora tu calidad de vida y bienestar<br>
+                    ✓ Fortalece tu autoestima y confianza<br>
+                    ✓ Te ayuda a enfrentar desafíos<br>
+                    ✓ Previene depresión y aislamiento</p>
+
+                    <div class="emoji">🤝</div>
+                    <h3 style="color: #059669; margin-bottom: 20px;">Lección 2: Redes de Apoyo</h3>
+                    <p>Construye tu red de personas que te apoyen:</p>
+                    <p>✓ Familia cercana y de confianza<br>
+                    ✓ Amigos verdaderos que te escuchan<br>
+                    ✓ Comunidad y organizaciones locales<br>
+                    ✓ Profesionales de salud mental<br>
+                    ✓ Grupos de apoyo con intereses similares</p>
+
+                    <div class="emoji">🙋‍♀️</div>
+                    <h3 style="color: #059669; margin-bottom: 20px;">Lección 3: Pedir Ayuda Sin Vergüenza</h3>
+                    <p>Pedir ayuda es un acto de valentía:</p>
+                    <p>✓ No hay vergüenza en necesitar ayuda<br>
+                    ✓ Todos necesitamos apoyo en algún momento<br>
+                    ✓ Hablar sobre tus sentimientos es saludable<br>
+                    ✓ Busca profesionales si lo necesitas<br>
+                    ✓ Cuida tu autocuidado todos los días</p>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(2)">Siguiente →</button>
+                </div>
+            </div>
+
+            <!-- PANEL 2-11: PREGUNTAS -->
+            <div class="panel" id="panel2">
+                <div class="question">❓ Pregunta 1: ¿Por qué es importante el apoyo emocional?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">No es importante</div>
+                    <div class="option" onclick="selectAnswer(this)">Reduce estrés y mejora la salud mental</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo para personas débiles</div>
+                    <div class="option" onclick="selectAnswer(this)">Es una pérdida de tiempo</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(1)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(3)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel3">
+                <div class="question">❓ Pregunta 2: ¿Qué es una red de apoyo?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Internet</div>
+                    <div class="option" onclick="selectAnswer(this)">Grupo de personas que te apoyan</div>
+                    <div class="option" onclick="selectAnswer(this)">Un televisor</div>
+                    <div class="option" onclick="selectAnswer(this)">Una aplicación</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(2)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(4)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel4">
+                <div class="question">❓ Pregunta 3: ¿Es correcto sentir que necesitas apoyo?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">No, es signo de debilidad</div>
+                    <div class="option" onclick="selectAnswer(this)">Sí, es completamente normal</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo si eres mayor</div>
+                    <div class="option" onclick="selectAnswer(this)">Nunca es correcto</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(3)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(5)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel5">
+                <div class="question">❓ Pregunta 4: ¿Cuál es parte de una red de apoyo?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Solo internet</div>
+                    <div class="option" onclick="selectAnswer(this)">Familia, amigos, comunidad y profesionales</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo dinero</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo medicina</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(4)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(6)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel6">
+                <div class="question">❓ Pregunta 5: ¿Hay vergüenza en pedir ayuda?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Sí, siempre hay vergüenza</div>
+                    <div class="option" onclick="selectAnswer(this)">No, pedir ayuda es un acto de valentía</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo para hombres</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo si es dinero</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(5)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(7)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel7">
+                <div class="question">❓ Pregunta 6: ¿Hablar sobre tus sentimientos es saludable?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">No, es mejor guardarse</div>
+                    <div class="option" onclick="selectAnswer(this)">Sí, es muy saludable expresarlos</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo si es emergencia</div>
+                    <div class="option" onclick="selectAnswer(this)">No tiene efecto</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(6)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(8)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel8">
+                <div class="question">❓ Pregunta 7: ¿Debes practicar autocuidado?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">No, es egoísmo</div>
+                    <div class="option" onclick="selectAnswer(this)">Sí, es fundamental para tu bienestar</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo si tienes dinero</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo los ricos</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(7)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(9)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel9">
+                <div class="question">❓ Pregunta 8: ¿Cuándo debes buscar ayuda profesional?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Nunca</div>
+                    <div class="option" onclick="selectAnswer(this)">Cuando lo necesites, sin esperar crisis</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo si tienes dinero</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo en emergencia grave</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(8)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(10)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel10">
+                <div class="question">❓ Pregunta 9: ¿Qué previene tener apoyo emocional?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Nada, no ayuda</div>
+                    <div class="option" onclick="selectAnswer(this)">Depresión, aislamiento y enfermedades</div>
+                    <div class="option" onclick="selectAnswer(this)">Felicidad</div>
+                    <div class="option" onclick="selectAnswer(this)">Nada, es inútil</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(9)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(11)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel11">
+                <div class="question">❓ Pregunta 10: ¿Puedes crear una red de apoyo?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">No es posible</div>
+                    <div class="option" onclick="selectAnswer(this)">Sí, buscando personas confiables</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo si eres rico</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo si tienes familia</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(10)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(12)">Siguiente →</button>
+                </div>
+            </div>
+
+            <!-- PANEL 12: JUEGO - WORD SEARCH -->
+            <div class="panel" id="panel12">
+                <div class="game-title">🎮 Juego Final: Sopa de Letras</div>
+                <p style="text-align: center; margin-bottom: 20px; font-size: 16px;">Encuentra las palabras sobre apoyo emocional:</p>
+                
+                <div class="word-list" id="wordList">
+                    <div class="word-item">APOYO</div>
+                    <div class="word-item">FAMILIA</div>
+                    <div class="word-item">AMIGOS</div>
+                    <div class="word-item">CONFIANZA</div>
+                    <div class="word-item">ESCUCHA</div>
+                    <div class="word-item">AYUDA</div>
+                    <div class="word-item">COMUNIDAD</div>
+                    <div class="word-item">CUIDADO</div>
+                </div>
+
+                <div style="text-align: center;">
+                    <div class="word-grid" id="wordGrid"></div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(11)">← Anterior</button>
+                    <button class="btn-next" onclick="completeModuleWithGame()">Completar Módulo ✓</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPanel = 1;
+        let selectedAnswers = {};
+        let foundWords = new Set();
+
+        const wordSearchLetters = [
+            ['A', 'P', 'O', 'Y', 'O', 'S', 'X', 'Z'],
+            ['F', 'A', 'M', 'I', 'L', 'I', 'A', 'W'],
+            ['A', 'M', 'I', 'G', 'O', 'S', 'Y', 'Q'],
+            ['C', 'O', 'N', 'F', 'I', 'A', 'N', 'Z'],
+            ['A', 'E', 'S', 'C', 'U', 'C', 'H', 'A'],
+            ['A', 'Y', 'U', 'D', 'A', 'B', 'C', 'D'],
+            ['C', 'O', 'M', 'U', 'N', 'I', 'D', 'A'],
+            ['C', 'U', 'I', 'D', 'A', 'D', 'O', 'S']
+        ];
+
+        function goBack() {
+            if (confirm('¿Deseas volver atrás y perder el progreso?')) {
+                window.history.back();
+            }
+        }
+
+        function goToPanel(panelNumber) {
+            document.getElementById(`panel${currentPanel}`).classList.remove('active');
+            currentPanel = panelNumber;
+            document.getElementById(`panel${currentPanel}`).classList.add('active');
+            updateProgress();
+            
+            if (currentPanel === 12) {
+                initWordSearch();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateProgress() {
+            const progress = (currentPanel / 12) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function selectAnswer(element) {
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedAnswers[currentPanel] = element.textContent;
+        }
+
+        function initWordSearch() {
+            const wordGrid = document.getElementById('wordGrid');
+            wordGrid.innerHTML = '';
+            
+            wordSearchLetters.forEach((row, rowIdx) => {
+                row.forEach((letter, colIdx) => {
+                    const letterDiv = document.createElement('div');
+                    letterDiv.className = 'letter';
+                    letterDiv.textContent = letter;
+                    letterDiv.onclick = () => toggleLetter(letterDiv, rowIdx, colIdx);
+                    letterDiv.id = `letter-${rowIdx}-${colIdx}`;
+                    wordGrid.appendChild(letterDiv);
+                });
+            });
+        }
+
+        function toggleLetter(element, row, col) {
+            element.classList.toggle('found');
+            checkWords();
+        }
+
+        function checkWords() {
+            const letters = document.querySelectorAll('.letter');
+            const found = new Set();
+            
+            letters.forEach(letter => {
+                if (letter.classList.contains('found')) {
+                    found.add(letter.textContent);
+                }
+            });
+
+            updateWordList();
+        }
+
+        function updateWordList() {
+            const wordItems = document.querySelectorAll('.word-item');
+            wordItems.forEach(item => {
+                const word = item.textContent;
+                const gridText = Array.from(document.querySelectorAll('.letter.found'))
+                    .map(l => l.textContent)
+                    .join('');
+                
+                if (gridText.includes(word) || word.split('').every(char => 
+                    Array.from(document.querySelectorAll('.letter.found')).some(l => l.textContent === char))) {
+                    item.classList.add('found');
+                }
+            });
+        }
+
+        function completeModuleWithGame() {
+            const foundCount = document.querySelectorAll('.word-item.found').length;
+            if (foundCount >= 5) {
+                const currentUser = localStorage.getItem('currentUser');
+                if (currentUser) {
+                    const users = JSON.parse(localStorage.getItem('users'));
+                    const user = users[currentUser];
+                    
+                    user.points = (user.points || 0) + 100;
+                    
+                    if (!user.completedModules) {
+                        user.completedModules = [];
+                    }
+                    if (!user.completedModules.includes('Apoyo emocional')) {
+                        user.completedModules.push('Apoyo emocional');
+                    }
+                    
+                    users[currentUser] = user;
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+                
+                alert('🎉 ¡Felicitaciones! Has completado el módulo de Apoyo Emocional.\n\nRecuerda: Cuidar tu salud emocional es cuidarte a ti mismo.\n\n+100 puntos ganados');
+                window.location.href = 'index.html';
+            } else {
+                alert('Sigue intentando encontrar más palabras para completar el módulo.');
+            }
+        }
+
+        updateProgress();
+    </script>
+</body>
+</html>

@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 1: Derechos Laborales - SegurSenior</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #db2777 0%, #d91b69 50%, #c91759 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(219, 39, 119, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #db2777 0%, #c91759 100%);
+            color: white;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        header button {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: white;
+            font-size: 24px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        header button:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+        }
+
+        header h1 {
+            flex: 1;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #db2777, #c91759);
+            width: 8.3%;
+            transition: width 0.5s ease;
+        }
+
+        .content {
+            padding: 40px;
+            min-height: 500px;
+        }
+
+        .panel {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .panel h2 {
+            color: #db2777;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .lesson-content {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .lesson-content p {
+            margin-bottom: 20px;
+        }
+
+        .lesson-content .emoji {
+            font-size: 40px;
+            margin: 20px 0;
+        }
+
+        .question {
+            font-size: 20px;
+            font-weight: bold;
+            color: #db2777;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option {
+            padding: 18px;
+            border: 3px solid #db2777;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+            background: white;
+            color: #333;
+        }
+
+        .option:hover {
+            background: #db2777;
+            color: white;
+            transform: translateX(10px);
+        }
+
+        .option.selected {
+            background: #db2777;
+            color: white;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #db2777, #c91759);
+            color: white;
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(219, 39, 119, 0.4);
+        }
+
+        .btn-next:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* WORD SEARCH GAME */
+        .word-search-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .word-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 50px);
+            gap: 8px;
+            margin: 30px 0;
+        }
+
+        .letter {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #db2777;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            background: white;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .letter:hover {
+            background: #fce4ec;
+            transform: scale(1.1);
+        }
+
+        .letter.found {
+            background: #db2777;
+            color: white;
+            font-weight: bold;
+        }
+
+        .word-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .word-item {
+            padding: 12px;
+            border: 2px solid #db2777;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            background: white;
+            transition: all 0.3s;
+        }
+
+        .word-item.found {
+            background: #db2777;
+            color: white;
+            text-decoration: line-through;
+        }
+
+        .game-title {
+            font-size: 24px;
+            color: #db2777;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 20px;
+            }
+
+            .panel h2 {
+                font-size: 22px;
+            }
+
+            .word-grid {
+                grid-template-columns: repeat(6, 40px);
+            }
+
+            .letter {
+                width: 40px;
+                height: 40px;
+                font-size: 14px;
+            }
+
+            .question {
+                font-size: 16px;
+            }
+
+            .option {
+                font-size: 16px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button onclick="goBack()">← Atrás</button>
+            <h1>📋 Derechos Laborales</h1>
+        </header>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content">
+            <!-- PANEL 1: LECCIONES -->
+            <div class="panel active" id="panel1">
+                <h2>🎓 Módulo 1: Derechos Laborales</h2>
+                <div class="lesson-content">
+                    <div class="emoji">⚖️</div>
+                    <h3 style="color: #db2777; margin-bottom: 20px;">Lección 1: Derechos Básicos de Trabajadores</h3>
+                    <p>Todo trabajador, sin importar su edad, tiene derechos fundamentales que deben ser respetados:</p>
+                    <p>✓ Derecho a un salario justo y puntual<br>
+                    ✓ Derecho a jornadas de trabajo límitadas<br>
+                    ✓ Derecho a descansos y vacaciones<br>
+                    ✓ Derecho a un ambiente de trabajo seguro<br>
+                    ✓ Derecho a la no discriminación</p>
+
+                    <div class="emoji">🛡️</div>
+                    <h3 style="color: #db2777; margin-bottom: 20px;">Lección 2: Protección Contra Abusos</h3>
+                    <p>Como trabajador informal, tienes protección contra:</p>
+                    <p>✓ Abuso de autoridad<br>
+                    ✓ Explotación laboral<br>
+                    ✓ Condiciones peligrosas de trabajo<br>
+                    ✓ Hostigamiento o acoso<br>
+                    ✓ Despidos sin justificación</p>
+
+                    <div class="emoji">📞</div>
+                    <h3 style="color: #db2777; margin-bottom: 20px;">Lección 3: Recursos y Denuncias</h3>
+                    <p>Si sufres abuso laboral, puedes:</p>
+                    <p>✓ Comunicarte con sindicatos locales<br>
+                    ✓ Buscar asesoría legal gratuita<br>
+                    ✓ Denunciar ante ministerios de trabajo<br>
+                    ✓ Contactar organizaciones de derechos laborales<br>
+                    ✓ Buscar apoyo comunitario</p>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(2)">Siguiente →</button>
+                </div>
+            </div>
+
+            <!-- PANEL 2-11: PREGUNTAS -->
+            <div class="panel" id="panel2">
+                <div class="question">❓ Pregunta 1: ¿Cuál es un derecho básico del trabajador?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Trabajar sin paga</div>
+                    <div class="option" onclick="selectAnswer(this)">Recibir un salario justo y puntual</div>
+                    <div class="option" onclick="selectAnswer(this)">No tener descansos</div>
+                    <div class="option" onclick="selectAnswer(this)">Ser discriminado</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(1)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(3)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel3">
+                <div class="question">❓ Pregunta 2: ¿Contra qué tipo de abuso tienes protección?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Todas las anteriores</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo hostigamiento</div>
+                    <div class="option" onclick="selectAnswer(this)">Abuso, explotación, condiciones peligrosas, hostigamiento</div>
+                    <div class="option" onclick="selectAnswer(this)">Ninguna protección</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(2)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(4)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel4">
+                <div class="question">❓ Pregunta 3: ¿A dónde puedes denunciar abuso laboral?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Solo a tus amigos</div>
+                    <div class="option" onclick="selectAnswer(this)">Al ministerio de trabajo o sindicatos</div>
+                    <div class="option" onclick="selectAnswer(this)">No se puede denunciar</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo después de 10 años</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(3)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(5)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel5">
+                <div class="question">❓ Pregunta 4: ¿Es legal discriminar a un trabajador por su edad?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Sí, siempre</div>
+                    <div class="option" onclick="selectAnswer(this)">No, es ilegal discriminar</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo si es mayor de 60</div>
+                    <div class="option" onclick="selectAnswer(this)">Depende del empleador</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(4)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(6)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel6">
+                <div class="question">❓ Pregunta 5: ¿Cuál es tu derecho respecto a las jornadas de trabajo?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Trabajar sin límites de horas</div>
+                    <div class="option" onclick="selectAnswer(this)">Tener jornadas límitadas y descansos</div>
+                    <div class="option" onclick="selectAnswer(this)">No tienes derechos sobre las horas</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo trabajadores formales tienen límites</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(5)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(7)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel7">
+                <div class="question">❓ Pregunta 6: ¿Qué hacer si tu empleador te retiene el salario?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Aceptar sin reclamo</div>
+                    <div class="option" onclick="selectAnswer(this)">Buscar asesoría legal y denunciar</div>
+                    <div class="option" onclick="selectAnswer(this)">Nunca se puede recuperar</div>
+                    <div class="option" onclick="selectAnswer(this)">Esperar un año para reclamar</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(6)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(8)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel8">
+                <div class="question">❓ Pregunta 7: ¿Tienes derecho a vacaciones como trabajador informal?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">No, los informales no tienen vacaciones</div>
+                    <div class="option" onclick="selectAnswer(this)">Sí, tienes derecho a descansos y vacaciones</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo después de 20 años</div>
+                    <div class="option" onclick="selectAnswer(this)">Depende del país</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(7)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(9)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel9">
+                <div class="question">❓ Pregunta 8: ¿Qué es un ambiente de trabajo seguro?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Donde ganas mucho dinero</div>
+                    <div class="option" onclick="selectAnswer(this)">Libre de peligros, condiciones higiénicas y equipo de protección</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo en oficinas</div>
+                    <div class="option" onclick="selectAnswer(this)">No existe tal cosa</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(8)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(10)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel10">
+                <div class="question">❓ Pregunta 9: ¿Pueden despedirte sin justificación válida?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Sí, siempre pueden hacerlo</div>
+                    <div class="option" onclick="selectAnswer(this)">No, deben tener causa justificada</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo si es lunes</div>
+                    <div class="option" onclick="selectAnswer(this)">Depende del color de cabello</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(9)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(11)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel11">
+                <div class="question">❓ Pregunta 10: ¿Dónde puedes encontrar asesoría legal gratuita?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">No existe asesoría gratuita</div>
+                    <div class="option" onclick="selectAnswer(this)">En sindicatos, organizaciones de derechos y ministerios</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo en abogados privados</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo en el extranjero</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(10)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(12)">Siguiente →</button>
+                </div>
+            </div>
+
+            <!-- PANEL 12: JUEGO - WORD SEARCH -->
+            <div class="panel" id="panel12">
+                <div class="game-title">🎮 Juego Final: Sopa de Letras</div>
+                <p style="text-align: center; margin-bottom: 20px; font-size: 16px;">Encuentra las palabras sobre derechos laborales:</p>
+                
+                <div class="word-list" id="wordList">
+                    <div class="word-item">DERECHOS</div>
+                    <div class="word-item">SALARIO</div>
+                    <div class="word-item">CONTRATO</div>
+                    <div class="word-item">PROTECCION</div>
+                    <div class="word-item">DIGNIDAD</div>
+                    <div class="word-item">TRABAJO</div>
+                    <div class="word-item">SEGURIDAD</div>
+                    <div class="word-item">JUSTICIA</div>
+                </div>
+
+                <div style="text-align: center;">
+                    <div class="word-grid" id="wordGrid"></div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(11)">← Anterior</button>
+                    <button class="btn-next" onclick="completeModuleWithGame()">Completar Módulo ✓</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPanel = 1;
+        let selectedAnswers = {};
+        let foundWords = new Set();
+
+        const wordSearchLetters = [
+            ['D', 'E', 'R', 'E', 'C', 'H', 'O', 'S'],
+            ['S', 'A', 'L', 'A', 'R', 'I', 'O', 'X'],
+            ['C', 'O', 'N', 'T', 'R', 'A', 'T', 'O'],
+            ['P', 'R', 'O', 'T', 'E', 'C', 'C', 'I'],
+            ['D', 'I', 'G', 'N', 'I', 'D', 'A', 'D'],
+            ['T', 'R', 'A', 'B', 'A', 'J', 'O', 'S'],
+            ['S', 'E', 'G', 'U', 'R', 'I', 'D', 'A'],
+            ['J', 'U', 'S', 'T', 'I', 'C', 'I', 'A']
+        ];
+
+        function goBack() {
+            if (confirm('¿Deseas volver atrás y perder el progreso?')) {
+                window.history.back();
+            }
+        }
+
+        function goToPanel(panelNumber) {
+            document.getElementById(`panel${currentPanel}`).classList.remove('active');
+            currentPanel = panelNumber;
+            document.getElementById(`panel${currentPanel}`).classList.add('active');
+            updateProgress();
+            
+            if (currentPanel === 12) {
+                initWordSearch();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateProgress() {
+            const progress = (currentPanel / 12) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function selectAnswer(element) {
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedAnswers[currentPanel] = element.textContent;
+        }
+
+        function initWordSearch() {
+            const wordGrid = document.getElementById('wordGrid');
+            wordGrid.innerHTML = '';
+            
+            wordSearchLetters.forEach((row, rowIdx) => {
+                row.forEach((letter, colIdx) => {
+                    const letterDiv = document.createElement('div');
+                    letterDiv.className = 'letter';
+                    letterDiv.textContent = letter;
+                    letterDiv.onclick = () => toggleLetter(letterDiv, rowIdx, colIdx);
+                    letterDiv.id = `letter-${rowIdx}-${colIdx}`;
+                    wordGrid.appendChild(letterDiv);
+                });
+            });
+        }
+
+        function toggleLetter(element, row, col) {
+            element.classList.toggle('found');
+            checkWords();
+        }
+
+        function checkWords() {
+            const letters = document.querySelectorAll('.letter');
+            const found = new Set();
+            
+            letters.forEach(letter => {
+                if (letter.classList.contains('found')) {
+                    found.add(letter.textContent);
+                }
+            });
+
+            updateWordList();
+        }
+
+        function updateWordList() {
+            const wordItems = document.querySelectorAll('.word-item');
+            wordItems.forEach(item => {
+                const word = item.textContent;
+                const gridText = Array.from(document.querySelectorAll('.letter.found'))
+                    .map(l => l.textContent)
+                    .join('');
+                
+                if (gridText.includes(word) || word.split('').every(char => 
+                    Array.from(document.querySelectorAll('.letter.found')).some(l => l.textContent === char))) {
+                    item.classList.add('found');
+                }
+            });
+        }
+
+        function completeModuleWithGame() {
+            const foundCount = document.querySelectorAll('.word-item.found').length;
+            if (foundCount >= 5) {
+                const currentUser = localStorage.getItem('currentUser');
+                if (currentUser) {
+                    const users = JSON.parse(localStorage.getItem('users'));
+                    const user = users[currentUser];
+                    
+                    user.points = (user.points || 0) + 100;
+                    
+                    if (!user.completedModules) {
+                        user.completedModules = [];
+                    }
+                    if (!user.completedModules.includes('Derechos laborales')) {
+                        user.completedModules.push('Derechos laborales');
+                    }
+                    
+                    users[currentUser] = user;
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+                
+                alert('🎉 ¡Felicitaciones! Has completado el módulo de Derechos Laborales.\n\nRecuerda: Conocer tus derechos es el primer paso para protegerte.\n\n+100 puntos ganados');
+                window.location.href = 'index.html';
+            } else {
+                alert('Sigue intentando encontrar más palabras para completar el módulo.');
+            }
+        }
+
+        updateProgress();
+    </script>
+</body>
+</html>

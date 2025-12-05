@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SegurSenior - Seguridad Emocional para Adultos Mayores</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f5fa;
+        }
+
+        .logo {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #2d5a8c 0%, #1e3a5f 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 22px;
+            box-shadow: 0 4px 12px rgba(45, 90, 140, 0.2);
+        }
+
+        header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1a1a1a;
+            letter-spacing: -0.5px;
+        }
+
+        .btn-inicio {
+            width: 100%;
+            padding: 14px;
+            background: white;
+            border: 2px solid #2d5a8c;
+            color: #2d5a8c;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 24px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(45, 90, 140, 0.1);
+        }
+
+        .btn-inicio:hover {
+            background: #f0f5fa;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(45, 90, 140, 0.2);
+        }
+
+        .btn-inicio:active {
+            transform: translateY(0);
+        }
+
+        .modulos-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .modulo-card {
+            border-radius: 14px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 140px;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+        }
+
+        .modulo-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+            border-color: rgba(45, 90, 140, 0.2);
+        }
+
+        .modulo-card:active {
+            transform: translateY(-2px);
+        }
+
+        .modulo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .modulo-card:hover img {
+            transform: scale(1.08);
+        }
+
+        /* Estilos para diferentes tarjetas */
+        .modulo-card:nth-child(1) img {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .modulo-card:nth-child(2) img {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .modulo-card:nth-child(3) img {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .modulo-card:nth-child(4) img {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .modulo-card:nth-child(5) img {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .modulo-card:nth-child(6) img {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+
+        .modulo-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));
+            padding: 16px;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: flex-end;
+            height: 100%;
+        }
+
+        .comunidad-section {
+            background: linear-gradient(135deg, #f0f5fa 0%, #e8f0f9 100%);
+            padding: 20px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 2px solid rgba(45, 90, 140, 0.1);
+        }
+
+        .comunidad-label {
+            font-size: 12px;
+            color: #7d7d7d;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .btn-comunidad {
+            width: 100%;
+            padding: 14px;
+            background: white;
+            border: 2px solid #2d5a8c;
+            color: #2d5a8c;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(45, 90, 140, 0.1);
+        }
+
+        .btn-comunidad:hover {
+            background: #f0f5fa;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(45, 90, 140, 0.2);
+        }
+
+        .arrow {
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-comunidad:hover .arrow {
+            transform: translateX(4px);
+        }
+
+        .btn-emergencia {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
+            letter-spacing: -0.3px;
+        }
+
+        .btn-emergencia:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-emergencia:active {
+            transform: translateY(-1px);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 32px 24px;
+            max-width: 360px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-content h2 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .modal-content p {
+            color: #7d7d7d;
+            margin-bottom: 24px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            letter-spacing: -0.2px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #d0d0d0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2d5a8c;
+            box-shadow: 0 0 0 4px rgba(45, 90, 140, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #2d5a8c 0%, #1e3a5f 100%);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(45, 90, 140, 0.2);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(45, 90, 140, 0.3);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .btn-close-modal {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #7d7d7d;
+            transition: all 0.2s ease;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        .btn-close-modal:hover {
+            color: #1a1a1a;
+            background: #f5f5f5;
+        }
+
+        .modal-tabs {
+            display: flex;
+            gap: 0;
+            margin: -32px -24px 24px -24px;
+            border-bottom: 2px solid #e0e0e0;
+            background: #f9f9f9;
+            border-radius: 16px 16px 0 0;
+            padding: 0;
+        }
+
+        .modal-tab {
+            flex: 1;
+            padding: 14px;
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 700;
+            color: #7d7d7d;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            margin-bottom: -2px;
+            letter-spacing: -0.2px;
+        }
+
+        .modal-tab.active {
+            color: #2d5a8c;
+            border-bottom-color: #2d5a8c;
+            background: white;
+        }
+
+        .modal-tab:hover {
+            color: #1a1a1a;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .btn-toggle-tab {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            color: #7d7d7d;
+        }
+
+        .btn-toggle-tab button {
+            background: none;
+            border: none;
+            color: #2d5a8c;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .dashboard-content {
+            display: none;
+        }
+
+        .dashboard-content.active {
+            display: block;
+        }
+
+        .dashboard-header {
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f5fa;
+        }
+
+        .user-greeting {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .user-info {
+            font-size: 14px;
+            color: #7d7d7d;
+            letter-spacing: -0.2px;
+        }
+
+        .streak {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, rgba(207, 98, 205, 0.1), rgba(102, 126, 234, 0.1));
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(207, 98, 205, 0.2);
+        }
+
+        .streak-icon {
+            font-size: 24px;
+        }
+
+        .streak-text {
+            font-size: 14px;
+            color: #7d7d7d;
+            font-weight: 600;
+        }
+
+        .streak-number {
+            color: #cf62cd;
+            font-weight: 800;
+            font-size: 16px;
+        }
+
+        .points-display {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, rgba(45, 90, 140, 0.1), rgba(207, 98, 205, 0.1));
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(45, 90, 140, 0.2);
+        }
+
+        .points-icon {
+            font-size: 24px;
+        }
+
+        .points-text {
+            font-size: 14px;
+            color: #7d7d7d;
+            font-weight: 600;
+        }
+
+        .points-number {
+            color: #2d5a8c;
+            font-weight: 800;
+            font-size: 16px;
+        }
+
+        .btn-logout {
+            width: 100%;
+            padding: 12px;
+            background: #f5f5f5;
+            color: #ef4444;
+            font-size: 14px;
+            font-weight: 700;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn-logout:hover {
+            background: #ffe0e0;
+            border-color: #ef4444;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
+        }
+
+        .btn-logout:active {
+            transform: translateY(0);
+        }
+
+        .achievement-popup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            display: none;
+            align-items: center;
+            gap: 12px;
+            z-index: 2000;
+            animation: slideUp 0.4s ease;
+        }
+
+        .achievement-popup.show {
+            display: flex;
+        }
+
+        .achievement-icon {
+            font-size: 32px;
+        }
+
+        .achievement-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .achievement-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .achievement-desc {
+            font-size: 11px;
+            color: #7d7d7d;
+        }
+
+        /* Animaciones */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+
+        #afterLoginContent {
+            animation: slideUp 0.5s ease;
+        }
+
+        .modulo-card {
+            animation: slideUp 0.6s ease backwards;
+        }
+
+        .modulo-card:nth-child(1) { animation-delay: 0.1s; }
+        .modulo-card:nth-child(2) { animation-delay: 0.2s; }
+        .modulo-card:nth-child(3) { animation-delay: 0.3s; }
+        .modulo-card:nth-child(4) { animation-delay: 0.4s; }
+        .modulo-card:nth-child(5) { animation-delay: 0.5s; }
+        .modulo-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .btn-inicio {
+            animation: slideUp 0.5s ease;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 16px;
+                padding: 16px;
+            }
+
+            header {
+                margin-bottom: 20px;
+            }
+
+            .modulos-grid {
+                gap: 12px;
+                margin-bottom: 16px;
+            }
+
+            .modulo-card {
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">🛡️</div>
+            <h1>SegurSenior</h1>
+        </header>
+
+        <!-- Contenido antes de iniciar sesión -->
+        <div id="beforeLoginContent">
+            <button class="btn-inicio" onclick="openLoginModal()">🔓 Iniciar sesión</button>
+        </div>
+
+        <!-- Contenido después de iniciar sesión -->
+        <div id="afterLoginContent" class="dashboard-content">
+            <div class="dashboard-header">
+                <div class="user-greeting">¡Hola, <span id="usernameDisplay"></span>! 👋</div>
+                <div class="user-info">Bienvenido a tu espacio de seguridad emocional</div>
+            </div>
+
+            <div class="streak">
+                <div class="streak-icon">🔥</div>
+                <div class="streak-text">Racha de aprendizaje: <span class="streak-number" id="streakCount">0</span> días</div>
+            </div>
+
+            <div class="points-display">
+                <div class="points-icon">⭐</div>
+                <div class="points-text">Puntos acumulados: <span class="points-number" id="pointsCount">0</span></div>
+            </div>
+
+            <div class="modulos-grid">
+                <div class="modulo-card" onclick="openModule('Seguridad emocional')">
+                    <img src="images/1.jpeg" alt="Seguridad emocional">
+                    <div class="modulo-overlay">Seguridad emocional</div>
+                </div>
+
+                <div class="modulo-card" onclick="openModule('Manejo del estrés')">
+                    <img src="images/MEDITANDO.avif" alt="Manejo del estrés">
+                    <div class="modulo-overlay">Manejo del estrés</div>
+                </div>
+
+                <div class="modulo-card" onclick="openModule('Derechos laborales')">
+                    <img src="images/3.jpg" alt="Derechos laborales">
+                    <div class="modulo-overlay">Derechos laborales</div>
+                </div>
+
+                <div class="modulo-card" onclick="openModule('Herramientas tecnológicas')">
+                    <img src="images/4.jpg" alt="Herramientas tecnológicas">
+                    <div class="modulo-overlay">Herramientas tecnológicas</div>
+                </div>
+
+                <div class="modulo-card" onclick="openModule('Trato con clientes')">
+                    <img src="images/5.jpg" alt="Trato con clientes">
+                    <div class="modulo-overlay">Trato con clientes</div>
+                </div>
+
+                <div class="modulo-card" onclick="openModule('Apoyo emocional')">
+                    <img src="images/6.jpeg" alt="Apoyo emocional">
+                    <div class="modulo-overlay">Apoyo emocional</div>
+                </div>
+            </div>
+
+            <div class="comunidad-section">
+                <div class="comunidad-label">Comunidad y apoyo</div>
+                <button class="btn-comunidad" onclick="openModule('Comunidad')">
+                    <span>💬 Sala de Amigos</span>
+                    <span class="arrow">→</span>
+                </button>
+            </div>
+
+            <button class="btn-emergencia" onclick="openEmergency()">🆘 Botón de emergencia</button>
+
+            <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+        </div>
+    </div>
+
+    <!-- Popup de logros -->
+    <div class="achievement-popup" id="achievementPopup">
+        <div class="achievement-icon" id="achievementIcon">🏆</div>
+        <div class="achievement-text">
+            <div class="achievement-title" id="achievementTitle">¡Logro desbloqueado!</div>
+            <div class="achievement-desc" id="achievementDesc">Completaste tu primer módulo</div>
+        </div>
+    </div>
+
+    <!-- Modal de Login/Registro -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="btn-close-modal" onclick="closeLoginModal()">✕</button>
+            
+            <div class="modal-tabs">
+                <button class="modal-tab active" onclick="switchTab('login')">Iniciar sesión</button>
+                <button class="modal-tab" onclick="switchTab('register')">Registrarse</button>
+            </div>
+
+            <!-- Pestaña de Login -->
+            <div id="loginTab" class="tab-content active">
+                <h2>Bienvenido</h2>
+                <p>Inicia sesión para acceder a los módulos</p>
+                
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginUsername">Usuario</label>
+                        <input type="text" id="loginUsername" placeholder="Tu usuario" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword">Contraseña</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                    </div>
+
+                    <button type="submit" class="btn-login">✓ Iniciar sesión</button>
+                </form>
+
+                <div class="btn-toggle-tab">
+                    ¿No tienes cuenta? <button onclick="switchTab('register')">Regístrate aquí</button>
+                </div>
+            </div>
+
+            <!-- Pestaña de Registro -->
+            <div id="registerTab" class="tab-content">
+                <h2>Crear cuenta</h2>
+                <p>Únete a la comunidad SegurSenior</p>
+                
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="registerName">Nombre completo</label>
+                        <input type="text" id="registerName" placeholder="Tu nombre" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerUsername">Usuario</label>
+                        <input type="text" id="registerUsername" placeholder="Elige un usuario" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerPassword">Contraseña</label>
+                        <input type="password" id="registerPassword" placeholder="••••••••" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerEmail">Correo electrónico</label>
+                        <input type="email" id="registerEmail" placeholder="tu@email.com" required>
+                    </div>
+
+                    <button type="submit" class="btn-login">✓ Crear cuenta</button>
+                </form>
+
+                <div class="btn-toggle-tab">
+                    ¿Ya tienes cuenta? <button onclick="switchTab('login')">Inicia sesión</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const initializeDatabase = () => {
+            if (!localStorage.getItem('users')) {
+                const users = {
+                    'prueba1': {
+                        password: 'prueba1',
+                        name: 'Usuario Prueba',
+                        email: 'prueba1@example.com',
+                        points: 0,
+                        streak: 0,
+                        completedModules: [],
+                        lastLogin: null
+                    }
+                };
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+        };
+
+        const achievements = {
+            'first-module': { icon: '🎯', title: 'Primer paso', desc: 'Completa tu primer módulo' },
+            'all-modules': { icon: '🏆', title: 'Maestro de Seguridad', desc: 'Completa todos los módulos' },
+            'streak-7': { icon: '🔥', title: 'En llamas', desc: '7 días de racha' },
+            'points-100': { icon: '⭐', title: 'Estrella en ascenso', desc: 'Acumula 100 puntos' },
+            'community-helper': { icon: '🤝', title: 'Ayudante de la comunidad', desc: 'Comparte en el chat comunitario' }
+        };
+
+        function switchTab(tabName) {
+            document.getElementById('loginTab').classList.remove('active');
+            document.getElementById('registerTab').classList.remove('active');
+            document.querySelectorAll('.modal-tab').forEach(tab => tab.classList.remove('active'));
+
+            if (tabName === 'login') {
+                document.getElementById('loginTab').classList.add('active');
+                document.querySelectorAll('.modal-tab')[0].classList.add('active');
+            } else if (tabName === 'register') {
+                document.getElementById('registerTab').classList.add('active');
+                document.querySelectorAll('.modal-tab')[1].classList.add('active');
+            }
+        }
+
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+            switchTab('login');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('registerName').value = '';
+            document.getElementById('registerUsername').value = '';
+            document.getElementById('registerPassword').value = '';
+            document.getElementById('registerEmail').value = '';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            initializeDatabase();
+
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const users = JSON.parse(localStorage.getItem('users'));
+
+            if (users[username] && users[username].password === password) {
+                localStorage.setItem('currentUser', username);
+                const user = users[username];
+                const today = new Date().toDateString();
+                if (user.lastLogin !== today) {
+                    user.streak += 1;
+                    user.lastLogin = today;
+                    users[username] = user;
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+                closeLoginModal();
+                showDashboard(username, users[username].name, users[username]);
+            } else {
+                alert('❌ Usuario o contraseña incorrectos.\n\nPrueba con:\nUsuario: prueba1\nContraseña: prueba1');
+            }
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            initializeDatabase();
+
+            const name = document.getElementById('registerName').value;
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            const email = document.getElementById('registerEmail').value;
+            const users = JSON.parse(localStorage.getItem('users'));
+
+            if (users[username]) {
+                alert('⚠️ Este usuario ya existe. Elige otro nombre de usuario.');
+                return;
+            }
+
+            users[username] = {
+                password: password,
+                name: name,
+                email: email,
+                points: 0,
+                streak: 0,
+                completedModules: [],
+                lastLogin: new Date().toDateString()
+            };
+
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('currentUser', username);
+            showNotification('✅ ¡Cuenta creada exitosamente!');
+            closeLoginModal();
+            showDashboard(username, name, users[username]);
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: white;
+                padding: 16px 24px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 3000;
+                animation: slideUp 0.3s ease;
+                font-size: 14px;
+                font-weight: 600;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideDown 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        function showAchievement(achievementKey) {
+            const achievement = achievements[achievementKey];
+            if (!achievement) return;
+
+            const popup = document.getElementById('achievementPopup');
+            document.getElementById('achievementIcon').textContent = achievement.icon;
+            document.getElementById('achievementTitle').textContent = achievement.title;
+            document.getElementById('achievementDesc').textContent = achievement.desc;
+
+            popup.classList.add('show');
+            setTimeout(() => popup.classList.remove('show'), 4000);
+        }
+
+        function showDashboard(username, name, userData) {
+            document.getElementById('beforeLoginContent').style.display = 'none';
+            document.getElementById('afterLoginContent').classList.add('active');
+            document.getElementById('usernameDisplay').textContent = name || username;
+            document.getElementById('streakCount').textContent = userData.streak || 0;
+            document.getElementById('pointsCount').textContent = userData.points || 0;
+
+            if (userData.streak === 1) {
+                showAchievement('first-module');
+            }
+        }
+
+        function logout() {
+            if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                localStorage.removeItem('currentUser');
+                document.getElementById('beforeLoginContent').style.display = 'block';
+                document.getElementById('afterLoginContent').classList.remove('active');
+                showNotification('👋 Sesión cerrada');
+            }
+        }
+
+        function completeModule(moduleName, points = 100) {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) return;
+
+            const users = JSON.parse(localStorage.getItem('users'));
+            const user = users[currentUser];
+
+            // Agregar puntos
+            user.points = (user.points || 0) + points;
+
+            // Marcar módulo como completado
+            if (!user.completedModules) {
+                user.completedModules = [];
+            }
+            if (!user.completedModules.includes(moduleName)) {
+                user.completedModules.push(moduleName);
+            }
+
+            // Guardar cambios
+            users[currentUser] = user;
+            localStorage.setItem('users', JSON.stringify(users));
+
+            // Verificar logros
+            if (user.completedModules.length === 1) {
+                showAchievement('first-module');
+            }
+            if (user.completedModules.length === 7) {
+                showAchievement('all-modules');
+            }
+            if (user.points >= 100) {
+                showAchievement('points-100');
+            }
+        }
+
+        function openModule(moduleName) {
+            const moduleMap = {
+                'Seguridad emocional': 'seguridad-emocional.html',
+                'Manejo del estrés': 'manejo-estres.html',
+                'Derechos laborales': 'derechos-laborales.html',
+                'Herramientas tecnológicas': 'herramientas-tecnologicas.html',
+                'Trato con clientes': 'trato-clientes.html',
+                'Apoyo emocional': 'apoyo-emocional.html',
+                'Comunidad': 'comunidad.html'
+            };
+
+            const file = moduleMap[moduleName];
+            if (file) {
+                localStorage.setItem('lastModule', moduleName);
+                window.location.href = file;
+            } else {
+                alert('Módulo no encontrado');
+            }
+        }
+
+        function openEmergency() {
+            alert('🆘 BOTÓN DE EMERGENCIA ACTIVADO\n\nEn caso de emergencia, contacta:\n\n📞 Línea Nacional: 123\n☎️ Emergencias: 911\n💬 WhatsApp de Apoyo: +1234567890\n\n¡Tu seguridad es nuestra prioridad!');
+        }
+
+        document.getElementById('loginModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeLoginModal();
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', function() {
+            initializeDatabase();
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                const users = JSON.parse(localStorage.getItem('users'));
+                showDashboard(currentUser, users[currentUser].name, users[currentUser]);
+            }
+        });
+    </script>
+</body>
+</html>

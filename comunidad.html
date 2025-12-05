@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 5: Comunidad - SegurSenior</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0891b2 0%, #0e7490 50%, #164e63 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(8, 145, 178, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0891b2 0%, #164e63 100%);
+            color: white;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        header button {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: white;
+            font-size: 24px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        header button:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+        }
+
+        header h1 {
+            flex: 1;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0891b2, #164e63);
+            width: 8.3%;
+            transition: width 0.5s ease;
+        }
+
+        .content {
+            padding: 40px;
+            min-height: 500px;
+        }
+
+        .panel {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .panel h2 {
+            color: #0891b2;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .lesson-content {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .lesson-content p {
+            margin-bottom: 20px;
+        }
+
+        .lesson-content .emoji {
+            font-size: 40px;
+            margin: 20px 0;
+        }
+
+        .question {
+            font-size: 20px;
+            font-weight: bold;
+            color: #0891b2;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option {
+            padding: 18px;
+            border: 3px solid #0891b2;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+            background: white;
+            color: #333;
+        }
+
+        .option:hover {
+            background: #0891b2;
+            color: white;
+            transform: translateX(10px);
+        }
+
+        .option.selected {
+            background: #0891b2;
+            color: white;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #0891b2, #164e63);
+            color: white;
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(8, 145, 178, 0.4);
+        }
+
+        .btn-next:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* TRIVIA GAME */
+        .trivia-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .trivia-question {
+            font-size: 22px;
+            font-weight: bold;
+            color: #0891b2;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .trivia-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .trivia-option {
+            padding: 15px;
+            border: 3px solid #0891b2;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: white;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .trivia-option:hover {
+            background: #0891b2;
+            color: white;
+            transform: translateX(10px);
+        }
+
+        .trivia-option.selected {
+            background: #0891b2;
+            color: white;
+        }
+
+        .trivia-option.correct {
+            background: #10b981;
+            color: white;
+            border-color: #059669;
+        }
+
+        .trivia-option.incorrect {
+            background: #ef4444;
+            color: white;
+            border-color: #dc2626;
+        }
+
+        .score-display {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0891b2;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .score-number {
+            font-size: 32px;
+            color: #0891b2;
+        }
+
+        .game-title {
+            font-size: 24px;
+            color: #0891b2;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .feedback {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+            min-height: 30px;
+        }
+
+        .feedback.correct {
+            color: #10b981;
+        }
+
+        .feedback.incorrect {
+            color: #ef4444;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 20px;
+            }
+
+            .panel h2 {
+                font-size: 22px;
+            }
+
+            .question {
+                font-size: 16px;
+            }
+
+            .option {
+                font-size: 16px;
+                padding: 15px;
+            }
+
+            .trivia-question {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button onclick="goBack()">← Atrás</button>
+            <h1>🤲 Comunidad</h1>
+        </header>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content">
+            <!-- PANEL 1: LECCIONES -->
+            <div class="panel active" id="panel1">
+                <h2>🎓 Módulo 5: Comunidad</h2>
+                <div class="lesson-content">
+                    <div class="emoji">💪</div>
+                    <h3 style="color: #0891b2; margin-bottom: 20px;">Lección 1: Fuerza de la Comunidad</h3>
+                    <p>Juntos somos más fuertes que separados:</p>
+                    <p>✓ La comunidad proporciona protección mutua<br>
+                    ✓ Compartir experiencias crea solidaridad<br>
+                    ✓ Las comunidades organizadas logran cambios<br>
+                    ✓ El apoyo colectivo es más efectivo<br>
+                    ✓ Todos tenemos algo valioso que contribuir</p>
+
+                    <div class="emoji">🌱</div>
+                    <h3 style="color: #0891b2; margin-bottom: 20px;">Lección 2: Iniciativas Colectivas</h3>
+                    <p>Acciones que transforman la comunidad:</p>
+                    <p>✓ Cooperativas y asociaciones de trabajadores<br>
+                    ✓ Proyectos de educación comunitaria<br>
+                    ✓ Fondos de ayuda mutua para emergencias<br>
+                    ✓ Grupos de formación y capacitación<br>
+                    ✓ Actividades que fortalecen el tejido social</p>
+
+                    <div class="emoji">🙋</div>
+                    <h3 style="color: #0891b2; margin-bottom: 20px;">Lección 3: Tu Rol en la Comunidad</h3>
+                    <p>Tu participación es importante:</p>
+                    <p>✓ Puedes ser mentor o guía para otros<br>
+                    ✓ Compartir tu experiencia ayuda a muchos<br>
+                    ✓ Participar en decisiones colectivas<br>
+                    ✓ Apoyo a otros crea un círculo virtuoso<br>
+                    ✓ Juntos construimos un futuro mejor</p>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(2)">Siguiente →</button>
+                </div>
+            </div>
+
+            <!-- PANEL 2-11: PREGUNTAS -->
+            <div class="panel" id="panel2">
+                <div class="question">❓ Pregunta 1: ¿Por qué es importante la comunidad?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Proporciona protección y apoyo mutuo</div>
+                    <div class="option" onclick="selectAnswer(this)">No es importante</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo para ricos</div>
+                    <div class="option" onclick="selectAnswer(this)">Es una pérdida de tiempo</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(1)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(3)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel3">
+                <div class="question">❓ Pregunta 2: ¿Qué son iniciativas colectivas?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Acciones solo de un individuo</div>
+                    <div class="option" onclick="selectAnswer(this)">Proyectos y acciones que la comunidad hace juntos</div>
+                    <div class="option" onclick="selectAnswer(this)">Decisiones del gobierno</div>
+                    <div class="option" onclick="selectAnswer(this)">Compras personales</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(2)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(4)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel4">
+                <div class="question">❓ Pregunta 3: ¿Cuál es un ejemplo de iniciativa colectiva?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Una cooperativa de trabajadores</div>
+                    <div class="option" onclick="selectAnswer(this)">Un videojuego</div>
+                    <div class="option" onclick="selectAnswer(this)">Una película</div>
+                    <div class="option" onclick="selectAnswer(this)">Un coche</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(3)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(5)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel5">
+                <div class="question">❓ Pregunta 4: ¿Puedes contribuir a tu comunidad?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">No, no soy importante</div>
+                    <div class="option" onclick="selectAnswer(this)">Sí, todos tenemos algo valioso que aportar</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo si tienes dinero</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo si eres profesor</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(4)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(6)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel6">
+                <div class="question">❓ Pregunta 5: ¿Qué es solidaridad?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Dejar solo a los demás</div>
+                    <div class="option" onclick="selectAnswer(this)">Apoyo mutuo y unión en la adversidad</div>
+                    <div class="option" onclick="selectAnswer(this)">Un conflicto</div>
+                    <div class="option" onclick="selectAnswer(this)">Un trabajo</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(5)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(7)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel7">
+                <div class="question">❓ Pregunta 6: ¿Pueden los trabajadores informales organizarse?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">No, es imposible</div>
+                    <div class="option" onclick="selectAnswer(this)">Sí, pueden formar cooperativas y asociaciones</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo si tienen dinero</div>
+                    <div class="option" onclick="selectAnswer(this)">No es legal</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(6)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(8)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel8">
+                <div class="question">❓ Pregunta 7: ¿Cuál es el rol de mentor en la comunidad?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">No tiene importancia</div>
+                    <div class="option" onclick="selectAnswer(this)">Guiar y compartir experiencia con otros</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo para maestros</div>
+                    <div class="option" onclick="selectAnswer(this)">Una película</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(7)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(9)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel9">
+                <div class="question">❓ Pregunta 8: ¿Qué logran las comunidades organizadas?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Nada, es inútil organizarse</div>
+                    <div class="option" onclick="selectAnswer(this)">Cambios reales y mejoras de derechos</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo problemas</div>
+                    <div class="option" onclick="selectAnswer(this)">Dinero para el gobierno</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(8)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(10)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel10">
+                <div class="question">❓ Pregunta 9: ¿Cuáles son beneficios del apoyo comunitario?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">No hay beneficios</div>
+                    <div class="option" onclick="selectAnswer(this)">Seguridad, solidaridad y fuerza compartida</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo para gente pobre</div>
+                    <div class="option" onclick="selectAnswer(this)">Es complicado</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(9)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(11)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel11">
+                <div class="question">❓ Pregunta 10: ¿Tu participación en la comunidad es valiosa?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">No, no importo</div>
+                    <div class="option" onclick="selectAnswer(this)">Sí, todos somos valiosos y necesarios</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo si eres joven</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo los inteligentes</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(10)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(12)">Siguiente →</button>
+                </div>
+            </div>
+
+            <!-- PANEL 12: JUEGO - TRIVIA -->
+            <div class="panel" id="panel12">
+                <div class="game-title">🎮 Juego Final: Trivia Comunitaria</div>
+                <p style="text-align: center; margin-bottom: 20px; font-size: 16px;">Responde preguntas sobre trabajadores informales y comunidad. ¡Acumula puntos!</p>
+                
+                <div style="text-align: center;">
+                    <div class="score-display">Puntos: <span class="score-number" id="scoreDisplay">0</span>/50</div>
+                    <div class="trivia-question" id="triviaQuestion">Pregunta...</div>
+                    <div class="trivia-options" id="triviaOptions"></div>
+                    <div class="feedback" id="feedback"></div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-next" id="triviaNextBtn" style="display:none;" onclick="nextTriviaQuestion()">Siguiente →</button>
+                    <button class="btn-next" onclick="goToPanel(11)">← Anterior</button>
+                    <button class="btn-next" id="completeBtn" onclick="completeModuleWithGame()">Completar Módulo ✓</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPanel = 1;
+        let selectedAnswers = {};
+        let triviaScore = 0;
+        let triviaIndex = 0;
+        let triviaAnswered = false;
+
+        const triviaQuestions = [
+            {
+                question: "¿Cuántos trabajadores informales hay en el mundo aproximadamente?",
+                options: ["100 millones", "2 billones", "500 millones", "50 mil"],
+                correct: 2,
+                points: 10
+            },
+            {
+                question: "¿Qué es una cooperativa de trabajadores?",
+                options: ["Una empresa privada", "Una asociación donde trabajadores se apoyan mutuamente", "Un banco", "Una escuela"],
+                correct: 1,
+                points: 10
+            },
+            {
+                question: "¿Cuál es el principal desafío de los trabajadores informales?",
+                options: ["Tener muchos amigos", "Falta de protección social y derechos", "Trabajar poco", "Tener dinero"],
+                correct: 1,
+                points: 10
+            },
+            {
+                question: "¿Qué beneficia más a los trabajadores informales?",
+                options: ["Trabajar solo", "Organizarse en comunidades y grupos", "Depender del patrón", "Ignorar sus derechos"],
+                correct: 1,
+                points: 10
+            },
+            {
+                question: "¿Cómo la solidaridad ayuda a la comunidad?",
+                options: ["Divide a las personas", "Crea divisiones", "Une fuerzas para protección mutua", "No sirve para nada"],
+                correct: 2,
+                points: 10
+            }
+        ];
+
+        function goBack() {
+            if (confirm('¿Deseas volver atrás y perder el progreso?')) {
+                window.history.back();
+            }
+        }
+
+        function goToPanel(panelNumber) {
+            document.getElementById(`panel${currentPanel}`).classList.remove('active');
+            currentPanel = panelNumber;
+            document.getElementById(`panel${currentPanel}`).classList.add('active');
+            updateProgress();
+            
+            if (currentPanel === 12) {
+                initTrivia();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateProgress() {
+            const progress = (currentPanel / 12) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function selectAnswer(element) {
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedAnswers[currentPanel] = element.textContent;
+        }
+
+        function initTrivia() {
+            triviaIndex = 0;
+            triviaScore = 0;
+            triviaAnswered = false;
+            displayTriviaQuestion();
+        }
+
+        function displayTriviaQuestion() {
+            if (triviaIndex >= triviaQuestions.length) {
+                document.getElementById('triviaQuestion').textContent = "¡Quiz completada!";
+                document.getElementById('triviaOptions').innerHTML = "";
+                document.getElementById('feedback').innerHTML = `<p style="color: #0891b2; font-size: 20px;">Puntuación final: ${triviaScore}/50</p>`;
+                document.getElementById('triviaNextBtn').style.display = 'none';
+                return;
+            }
+
+            const q = triviaQuestions[triviaIndex];
+            document.getElementById('triviaQuestion').textContent = `Pregunta ${triviaIndex + 1}: ${q.question}`;
+            
+            const optionsDiv = document.getElementById('triviaOptions');
+            optionsDiv.innerHTML = '';
+            
+            q.options.forEach((option, idx) => {
+                const optBtn = document.createElement('div');
+                optBtn.className = 'trivia-option';
+                optBtn.textContent = option;
+                optBtn.onclick = () => answerTrivia(idx, q.correct, q.points);
+                optionsDiv.appendChild(optBtn);
+            });
+
+            document.getElementById('feedback').innerHTML = '';
+            document.getElementById('triviaNextBtn').style.display = 'none';
+            triviaAnswered = false;
+        }
+
+        function answerTrivia(selected, correct, points) {
+            if (triviaAnswered) return;
+            triviaAnswered = true;
+
+            const options = document.querySelectorAll('.trivia-option');
+            options[selected].classList.add(selected === correct ? 'correct' : 'incorrect');
+            options[correct].classList.add('correct');
+
+            const feedback = document.getElementById('feedback');
+            if (selected === correct) {
+                triviaScore += points;
+                feedback.textContent = '✓ ¡Correcto!';
+                feedback.className = 'feedback correct';
+            } else {
+                feedback.textContent = '✗ Incorrecto. La respuesta correcta era: ' + triviaQuestions[triviaIndex].options[correct];
+                feedback.className = 'feedback incorrect';
+            }
+
+            document.getElementById('scoreDisplay').textContent = triviaScore;
+            document.getElementById('triviaNextBtn').style.display = 'flex';
+        }
+
+        function nextTriviaQuestion() {
+            triviaIndex++;
+            displayTriviaQuestion();
+        }
+
+        function completeModuleWithGame() {
+            if (triviaIndex >= triviaQuestions.length) {
+                const currentUser = localStorage.getItem('currentUser');
+                if (currentUser) {
+                    const users = JSON.parse(localStorage.getItem('users'));
+                    const user = users[currentUser];
+                    
+                    user.points = (user.points || 0) + 100;
+                    
+                    if (!user.completedModules) {
+                        user.completedModules = [];
+                    }
+                    if (!user.completedModules.includes('Comunidad')) {
+                        user.completedModules.push('Comunidad');
+                    }
+                    
+                    users[currentUser] = user;
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+                
+                alert(`🎉 ¡Excelente! Has completado el módulo de Comunidad.\n\nTu puntuación final: ${triviaScore}/50\n\nRecuerda: La comunidad es nuestra fuerza. Juntos somos invencibles.\n\n+100 puntos ganados`);
+                window.location.href = 'index.html';
+            } else {
+                alert('Por favor, completa todas las preguntas del trivia primero.');
+            }
+        }
+
+        updateProgress();
+    </script>
+</body>
+</html>

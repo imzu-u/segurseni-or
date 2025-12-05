@@ -1,0 +1,24 @@
+{
+  "name": "segurseni or",
+  "version": "1.0.0",
+  "description": "Aplicación educativa gamificada para mejorar la seguridad emocional de adultos mayores trabajadores informales",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000"
+  },
+  "keywords": [
+    "educación",
+    "adultos mayores",
+    "seguridad emocional",
+    "gamificación",
+    "bienestar",
+    "trabajadores informales"
+  ],
+  "author": "Tu Nombre",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tu-usuario/segurseni or.git"
+  },
+  "homepage": "https://tu-usuario.github.io/segurseni or"
+}

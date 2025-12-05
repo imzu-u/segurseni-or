@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manejo del Estrés - SegurSenior</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0891b2 0%, #0369a1 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            flex: 1;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e0e0e0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0891b2 0%, #06b6d4 100%);
+            width: 8%;
+            transition: width 0.4s ease;
+        }
+
+        .content {
+            padding: 24px;
+            min-height: 400px;
+        }
+
+        .panel {
+            display: none;
+            animation: slideUp 0.5s ease;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        .lesson-card {
+            background: linear-gradient(135deg, #f0f9ff 0%, #cffafe 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border-left: 4px solid #0891b2;
+        }
+
+        .lesson-card h3 {
+            color: #0c4a6e;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .lesson-card p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .tip {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid #06b6d4;
+            color: #555;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .quiz-question {
+            margin: 20px 0;
+        }
+
+        .quiz-question h4 {
+            color: #0891b2;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .quiz-question p {
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .quiz-option {
+            background: #f9f9f9;
+            border: 2px solid #e0e0e0;
+            padding: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .quiz-option:hover {
+            background: #f0f0f0;
+            border-color: #0891b2;
+            transform: translateX(4px);
+        }
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+            animation: pulse 0.6s ease;
+        }
+
+        .quiz-option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+            animation: shake 0.4s ease;
+        }
+
+        /* ESTILOS PARA JUEGO DE RESPIRACIÓN */
+        .breathing-game {
+            text-align: center;
+        }
+
+        .game-title {
+            color: #0891b2;
+            font-size: 20px;
+            margin-bottom: 16px;
+            font-weight: bold;
+        }
+
+        .breathing-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+            margin: 30px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            animation: breathe 8s infinite;
+            box-shadow: 0 8px 24px rgba(8, 145, 178, 0.3);
+        }
+
+        .breathing-circle.paused {
+            animation: none;
+            background: #cbd5e1;
+        }
+
+        @keyframes breathe {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 8px 24px rgba(8, 145, 178, 0.3);
+            }
+            25% {
+                transform: scale(1.2);
+                box-shadow: 0 12px 32px rgba(8, 145, 178, 0.5);
+            }
+            50% {
+                transform: scale(1.2);
+                box-shadow: 0 12px 32px rgba(8, 145, 178, 0.5);
+            }
+            75% {
+                transform: scale(1);
+                box-shadow: 0 8px 24px rgba(8, 145, 178, 0.3);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 8px 24px rgba(8, 145, 178, 0.3);
+            }
+        }
+
+        .breathing-instructions {
+            color: #0c4a6e;
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .breathing-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            gap: 10px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #0891b2 0%, #0369a1 100%);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            flex: 1;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-8px);
+            }
+            75% {
+                transform: translateX(8px);
+            }
+        }
+
+        .feedback {
+            margin-top: 16px;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none;
+            animation: slideUp 0.3s ease;
+            font-size: 14px;
+        }
+
+        .feedback.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .feedback.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #0891b2 0%, #0369a1 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(8, 145, 178, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(8, 145, 178, 0.3);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 12px;
+            background: #f5f5f5;
+            color: #0891b2;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .points {
+            display: inline-block;
+            background: linear-gradient(135deg, #0891b2, #06b6d4);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 16px;
+        }
+
+        .panel-counter {
+            text-align: center;
+            color: #7d7d7d;
+            font-size: 14px;
+            margin-top: 12px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 16px;
+            }
+
+            .content {
+                padding: 16px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="back-btn" onclick="goBack()">←</button>
+            <h1>Manejo del Estrés</h1>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content">
+            <!-- PANEL 1: LECCIONES -->
+            <div class="panel active" id="panel1">
+                <div class="lesson-card">
+                    <h3>📚 Lección 1: ¿Qué es el estrés?</h3>
+                    <p>El estrés es la reacción de tu cuerpo ante situaciones desafiantes. En el trabajo informal, puede surgir por incertidumbre de ingresos, horarios variables o presión de clientes.</p>
+                    <div class="tip">
+                        💡 <strong>Consejo:</strong> El estrés es natural. Lo importante es aprender a reconocerlo y manejarlo.
+                    </div>
+                </div>
+
+                <div class="lesson-card">
+                    <h3>🎯 Lección 2: Señales de estrés</h3>
+                    <p>Identifica cómo tu cuerpo te avisa que estás estresado: tensión muscular, dificultad para dormir, cambios de apetito, irritabilidad o fatiga.</p>
+                    <div class="tip">
+                        💡 <strong>Ejercicio:</strong> Observa tu cuerpo durante la semana y anota cuando sientes tensión.
+                    </div>
+                </div>
+
+                <div class="lesson-card">
+                    <h3>🛡️ Lección 3: Técnicas de relajación</h3>
+                    <p>Aprende técnicas simples: respiración profunda, ejercicio físico suave, meditación o actividades que disfrutes. Dedica 10-15 minutos diarios.</p>
+                    <div class="tip">
+                        💡 <strong>Técnica rápida:</strong> Respira lentamente durante 5 minutos cuando sientas estrés.
+                    </div>
+                </div>
+
+                <div class="points">+50 puntos</div>
+                <button class="btn-primary" onclick="goToPanel(2)">Iniciar preguntas →</button>
+                <div class="panel-counter">Panel 1 de 12</div>
+            </div>
+
+            <!-- PANELES 2-11: PREGUNTAS -->
+            <div class="panel" id="panel2">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 1</h4>
+                    <p><strong>¿Cuál es una causa común de estrés en trabajos informales?</strong></p>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 2)">A) Incertidumbre de ingresos</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 2)">B) Horarios fijos establecidos</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 2)">C) Beneficios laborales garantizados</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 2)">D) Supervisión constante</div>
+                    <div class="feedback"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(1)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(3)">Siguiente →</button>
+                </div>
+                <div class="panel-counter">Panel 2 de 12</div>
+            </div>
+
+            <div class="panel" id="panel3">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 2</h4>
+                    <p><strong>¿Cuál es un síntoma físico del estrés?</strong></p>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 3)">A) Aumento de energía positiva</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 3)">B) Tensión muscular</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 3)">C) Mayor concentración</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 3)">D) Mejor digestión</div>
+                    <div class="feedback"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(2)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(4)">Siguiente →</button>
+                </div>
+                <div class="panel-counter">Panel 3 de 12</div>
+            </div>
+
+            <div class="panel" id="panel4">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 3</h4>
+                    <p><strong>¿Cuánto tiempo se recomienda dedicar a técnicas de relajación?</strong></p>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 4)">A) 1 minuto diario</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 4)">B) 10-15 minutos diarios</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 4)">C) 1 hora semanal</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 4)">D) No es necesario</div>
+                    <div class="feedback"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(3)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(5)">Siguiente →</button>
+                </div>
+                <div class="panel-counter">Panel 4 de 12</div>
+            </div>
+
+            <div class="panel" id="panel5">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 4</h4>
+                    <p><strong>¿Cuál es un beneficio de la respiración profunda?</strong></p>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 5)">A) Reduce la ansiedad y calma el cuerpo</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 5)">B) Aumenta el estrés</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 5)">C) Solo funciona en la noche</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 5)">D) No tiene efecto real</div>
+                    <div class="feedback"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(4)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(6)">Siguiente →</button>
+                </div>
+                <div class="panel-counter">Panel 5 de 12</div>
+            </div>
+
+            <div class="panel" id="panel6">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 5</h4>
+                    <p><strong>¿Qué actividad NO es recomendada para reducir estrés?</strong></p>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 6)">A) Ejercicio físico moderado</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 6)">B) Meditación</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 6)">C) Trabajar sin descansos</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 6)">D) Hablar con amigos</div>
+                    <div class="feedback"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(5)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(7)">Siguiente →</button>
+                </div>
+                <div class="panel-counter">Panel 6 de 12</div>
+            </div>
+
+            <div class="panel" id="panel7">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 6</h4>
+                    <p><strong>¿Cuál es el primer paso para manejar el estrés?</strong></p>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 7)">A) Reconocer y aceptar que tienes estrés</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 7)">B) Ignorarlo completamente</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 7)">C) Dejar de trabajar</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 7)">D) Solo medicinas</div>
+                    <div class="feedback"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(6)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(8)">Siguiente →</button>
+                </div>
+                <div class="panel-counter">Panel 7 de 12</div>
+            </div>
+
+            <div class="panel" id="panel8">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 7</h4>
+                    <p><strong>¿En qué momento es mejor practicar técnicas de relajación?</strong></p>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 8)">A) Solo cuando estés muy estresado</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 8)">B) Regularmente, incluso cuando no estés estresado</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 8)">C) Nunca es el momento correcto</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 8)">D) Solo en fines de semana</div>
+                    <div class="feedback"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(7)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(9)">Siguiente →</button>
+                </div>
+                <div class="panel-counter">Panel 8 de 12</div>
+            </div>
+
+            <div class="panel" id="panel9">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 8</h4>
+                    <p><strong>¿Cuál es un trigger (disparador) común de estrés en adultos mayores?</strong></p>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 9)">A) Cambios inesperados en rutinas</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 9)">B) Mantener la misma rutina</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 9)">C) Descansar demasiado</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 9)">D) Pasar tiempo con familia</div>
+                    <div class="feedback"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(8)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(10)">Siguiente →</button>
+                </div>
+                <div class="panel-counter">Panel 9 de 12</div>
+            </div>
+
+            <div class="panel" id="panel10">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 9</h4>
+                    <p><strong>¿Qué rol juega el sueño en la gestión del estrés?</strong></p>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 10)">A) Es fundamental para recuperarse del estrés</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 10)">B) No tiene relación con el estrés</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 10)">C) Duerme menos para estar más productivo</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 10)">D) Solo importa dormir mucho</div>
+                    <div class="feedback"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(9)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(11)">Siguiente →</button>
+                </div>
+                <div class="panel-counter">Panel 10 de 12</div>
+            </div>
+
+            <div class="panel" id="panel11">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 10</h4>
+                    <p><strong>¿Cuál es el objetivo principal del manejo del estrés?</strong></p>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 11)">A) Eliminar completamente el estrés</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 11)">B) Aprender a responder de forma saludable</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 11)">C) Ignorar todas las situaciones difíciles</div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 11)">D) No está claro</div>
+                    <div class="feedback"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(10)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(12)">Siguiente: Juego →</button>
+                </div>
+                <div class="panel-counter">Panel 11 de 12</div>
+            </div>
+
+            <!-- PANEL 12: JUEGO DE RESPIRACIÓN -->
+            <div class="panel" id="panel12">
+                <div class="breathing-game">
+                    <h2 class="game-title">🎮 Ejercicio de Respiración Guiada</h2>
+                    <p style="color: #555; margin-bottom: 16px; font-size: 14px;">Practica respiración profunda. Sigue los ciclos del círculo.</p>
+                    
+                    <div class="breathing-instructions">
+                        <p><strong>Instrucciones:</strong></p>
+                        <p>1. Siéntate cómodo</p>
+                        <p>2. Sigue el círculo que se expande y contrae</p>
+                        <p>3. Inhala cuando se expande (4 segundos)</p>
+                        <p>4. Sostén la respiración (4 segundos)</p>
+                        <p>5. Exhala cuando se contrae (4 segundos)</p>
+                    </div>
+
+                    <div class="breathing-circle" id="breathingCircle">
+                        Respira...
+                    </div>
+
+                    <div class="breathing-stats">
+                        <div class="stat-box">
+                            Ciclos completados: <span id="cycleCount">0</span>
+                        </div>
+                        <div class="stat-box">
+                            Tiempo: <span id="timeCount">0:00</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary" onclick="toggleBreathingExercise()">Pausar/Reanudar</button>
+                    <button class="btn-primary" style="margin-top: 8px; background: #28a745;" onclick="completeModuleWithGame()">Terminar módulo ✓</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let breathingActive = true;
+        let cycleCount = 0;
+        let timeElapsed = 0;
+        let breathingInterval = null;
+        let timerInterval = null;
+
+        function initializeBreathingGame() {
+            cycleCount = 0;
+            timeElapsed = 0;
+            updateBreathingStats();
+            startBreathingTimer();
+        }
+
+        function startBreathingTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (breathingActive) {
+                    timeElapsed++;
+                    updateBreathingStats();
+                }
+            }, 1000);
+        }
+
+        function updateBreathingStats() {
+            const minutes = Math.floor(timeElapsed / 60);
+            const seconds = timeElapsed % 60;
+            document.getElementById('timeCount').textContent = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+            document.getElementById('cycleCount').textContent = Math.floor(timeElapsed / 8);
+        }
+
+        function toggleBreathingExercise() {
+            breathingActive = !breathingActive;
+            const circle = document.getElementById('breathingCircle');
+            if (breathingActive) {
+                circle.classList.remove('paused');
+            } else {
+                circle.classList.add('paused');
+            }
+        }
+
+        // Funciones principales
+        function goBack() {
+            if (timerInterval) clearInterval(timerInterval);
+            window.location.href = 'index.html';
+        }
+
+        function goToPanel(panelNumber) {
+            if (timerInterval) clearInterval(timerInterval);
+            document.querySelectorAll('.panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.getElementById('panel' + panelNumber).classList.add('active');
+            const progress = (panelNumber / 12) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+
+            if (panelNumber === 12) {
+                setTimeout(() => initializeBreathingGame(), 200);
+            }
+
+            window.scrollTo(0, 0);
+        }
+
+        function selectAnswer(element, isCorrect, panelNumber) {
+            const panelElement = document.getElementById('panel' + panelNumber);
+            panelElement.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.style.pointerEvents = 'none';
+            });
+            const feedback = element.parentElement.querySelector('.feedback');
+            setTimeout(() => {
+                if (isCorrect) {
+                    element.classList.add('correct');
+                    feedback.classList.add('success');
+                    feedback.textContent = '✅ ¡Correcto! Excelente respuesta.';
+                } else {
+                    element.classList.add('incorrect');
+                    feedback.classList.add('error');
+                    feedback.textContent = '❌ No es correcto. Lee nuevamente.';
+                }
+            }, 200);
+        }
+
+        function completeModuleWithGame() {
+            if (timerInterval) clearInterval(timerInterval);
+            
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                const users = JSON.parse(localStorage.getItem('users'));
+                const user = users[currentUser];
+                
+                user.points = (user.points || 0) + 100;
+                
+                if (!user.completedModules) {
+                    user.completedModules = [];
+                }
+                if (!user.completedModules.includes('Manejo del estrés')) {
+                    user.completedModules.push('Manejo del estrés');
+                }
+                
+                users[currentUser] = user;
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+            
+            alert('🎉 ¡Excelente trabajo!\n\nHas completado el módulo de Manejo del Estrés.\n\n+100 puntos ganados (50 por lecciones + 50 por ejercicio)');
+            window.location.href = 'index.html';
+        }
+
+        window.addEventListener('load', () => {
+            if (document.getElementById('panel12').classList.contains('active')) {
+                initializeBreathingGame();
+            }
+        });
+
+        window.addEventListener('beforeunload', () => {
+            if (timerInterval) clearInterval(timerInterval);
+        });
+    </script>
+</body>
+</html>

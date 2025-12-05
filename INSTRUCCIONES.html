@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instrucciones GitHub Pages</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #2d5a8c;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .step {
+            background: #f0f5fa;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #2d5a8c;
+            border-radius: 4px;
+        }
+
+        .step h2 {
+            color: #2d5a8c;
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        .step p {
+            color: #555;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+
+        .step ol {
+            color: #555;
+            padding-left: 20px;
+        }
+
+        .step li {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+
+        .code {
+            background: #1e3a5f;
+            color: #4ade80;
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 4px solid #28a745;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #2d5a8c 0%, #1e3a5f 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            margin: 10px 0;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .button:hover {
+            opacity: 0.9;
+        }
+
+        .links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .emoji {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        footer {
+            text-align: center;
+            color: #999;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><span class="emoji">🚀</span>Publicar SegurSenior en GitHub Pages</h1>
+
+        <div class="step">
+            <h2>Paso 1: Crear Cuenta en GitHub</h2>
+            <ol>
+                <li>Ve a <strong>github.com</strong></li>
+                <li>Click en "Sign up"</li>
+                <li>Completa tu email, contraseña y nombre de usuario</li>
+                <li>Verifica tu correo</li>
+            </ol>
+            <a href="https://github.com/signup" class="button" target="_blank">Ir a GitHub</a>
+        </div>
+
+        <div class="step">
+            <h2>Paso 2: Instalar Git</h2>
+            <ol>
+                <li>Descarga desde <strong>git-scm.com</strong></li>
+                <li>Instala con opciones por defecto</li>
+                <li>Abre PowerShell y escribe: <code>git --version</code></li>
+            </ol>
+            <a href="https://git-scm.com/download/win" class="button" target="_blank">Descargar Git</a>
+        </div>
+
+        <div class="step">
+            <h2>Paso 3: Crear Repositorio</h2>
+            <ol>
+                <li>Inicia sesión en GitHub</li>
+                <li>Click en <strong>+</strong> arriba a la derecha</li>
+                <li>Selecciona "New repository"</li>
+                <li>Nombre: <strong>segurseni or</strong> (sin espacios)</li>
+                <li>Tipo: <strong>Public</strong></li>
+                <li>Click "Create repository"</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h2>Paso 4: Abrir PowerShell</h2>
+            <ol>
+                <li>Abre PowerShell (busca "PowerShell" en Windows)</li>
+                <li>Navega a tu carpeta:
+                    <div class="code">cd "c:\Users\JHAIR\Desktop\html-01\hhh"</div>
+                </li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h2>Paso 5: Configurar Git</h2>
+            <ol>
+                <li>Ejecuta estos comandos:
+                    <div class="code">git config --global user.name "Tu Nombre"
+git config --global user.email "tu@email.com"</div>
+                </li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h2>Paso 6: Subir a GitHub</h2>
+            <ol>
+                <li>Copia estos comandos en PowerShell:
+                    <div class="code">git init
+git add .
+git commit -m "Primer commit: SegurSenior"
+git branch -M main
+git remote add origin https://github.com/TU_USUARIO/segurseni or.git
+git push -u origin main</div>
+                </li>
+                <li><strong>Reemplaza TU_USUARIO con tu usuario de GitHub</strong></li>
+            </ol>
+            <div class="warning">
+                <strong>⚠️ Nota:</strong> GitHub te pedirá autenticación. Si falla, crea un token en GitHub → Settings → Developer settings → Personal access tokens
+            </div>
+        </div>
+
+        <div class="step">
+            <h2>Paso 7: Habilitar GitHub Pages</h2>
+            <ol>
+                <li>Ve a tu repositorio en GitHub</li>
+                <li>Click en <strong>Settings</strong></li>
+                <li>En el menú izquierdo, busca <strong>Pages</strong></li>
+                <li>En "Source", selecciona: <strong>main branch</strong></li>
+                <li>Click <strong>Save</strong></li>
+                <li>Espera 1-2 minutos</li>
+            </ol>
+        </div>
+
+        <div class="success">
+            <strong>✅ ¡Listo!</strong><br>
+            Tu app estará disponible en:<br>
+            <strong style="font-size: 16px;">https://tu-usuario.github.io/segurseni or</strong><br>
+            <br>
+            <em>Reemplaza "tu-usuario" con tu nombre de usuario de GitHub</em>
+        </div>
+
+        <div class="step">
+            <h2>Paso 8: Compartir con Amigos</h2>
+            <ol>
+                <li>Copia tu URL: <strong>https://tu-usuario.github.io/segurseni or</strong></li>
+                <li>Comparte el link por WhatsApp, email, redes sociales</li>
+                <li>Tus amigos pueden abrir en cualquier navegador (móvil o PC)</li>
+                <li>¡No necesitan instalar nada!</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h2>Hacer Cambios Después</h2>
+            <p>Si quieres actualizar tu app:</p>
+            <div class="code">cd "c:\Users\JHAIR\Desktop\html-01\hhh"
+git add .
+git commit -m "Descripción del cambio"
+git push</div>
+        </div>
+
+        <div class="links">
+            <a href="https://github.com" class="button" target="_blank">GitHub</a>
+            <a href="https://git-scm.com" class="button" target="_blank">Descargar Git</a>
+            <a href="https://pages.github.com" class="button" target="_blank">GitHub Pages</a>
+        </div>
+
+        <footer>
+            <p>SegurSenior - Aplicación para seguridad emocional de adultos mayores</p>
+            <p>Créado con ❤️</p>
+        </footer>
+    </div>
+</body>
+</html>

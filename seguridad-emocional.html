@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguridad Emocional - SegurSenior</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2d5a8c 0%, #1e3a5f 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            flex: 1;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e0e0e0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2d5a8c 0%, #cf62cd 100%);
+            width: 8%;
+            transition: width 0.4s ease;
+        }
+
+        .content {
+            padding: 24px;
+            min-height: 400px;
+        }
+
+        .panel {
+            display: none;
+            animation: slideUp 0.5s ease;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        .lesson-card {
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e8f5 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border-left: 4px solid #2d5a8c;
+        }
+
+        .lesson-card h3 {
+            color: #1e3a5f;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .lesson-card p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .tip {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid #cf62cd;
+            color: #555;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .quiz-question {
+            margin: 20px 0;
+        }
+
+        .quiz-question h4 {
+            color: #2d5a8c;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .quiz-question p {
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .quiz-option {
+            background: #f9f9f9;
+            border: 2px solid #e0e0e0;
+            padding: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .quiz-option:hover {
+            background: #f0f0f0;
+            border-color: #2d5a8c;
+            transform: translateX(4px);
+        }
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+            animation: pulse 0.6s ease;
+        }
+
+        .quiz-option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+            animation: shake 0.4s ease;
+        }
+
+        /* ESTILOS PARA JUEGO DE MEMORIA */
+        .game-container {
+            text-align: center;
+        }
+
+        .game-title {
+            color: #2d5a8c;
+            font-size: 20px;
+            margin-bottom: 16px;
+            font-weight: bold;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #2d5a8c 0%, #1e3a5f 100%);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            flex: 1;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .memory-card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #2d5a8c 0%, #1e3a5f 100%);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(45, 90, 140, 0.2);
+            color: white;
+            font-weight: bold;
+        }
+
+        .memory-card:hover:not(.matched) {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(45, 90, 140, 0.4);
+        }
+
+        .memory-card.flipped {
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e8f5 100%);
+            color: #2d5a8c;
+        }
+
+        .memory-card.matched {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+            cursor: default;
+            animation: pulse 0.6s ease;
+        }
+
+        .game-message {
+            min-height: 30px;
+            color: #2d5a8c;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .game-message.success {
+            color: #155724;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-8px);
+            }
+            75% {
+                transform: translateX(8px);
+            }
+        }
+
+        .feedback {
+            margin-top: 16px;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none;
+            animation: slideUp 0.3s ease;
+            font-size: 14px;
+        }
+
+        .feedback.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .feedback.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #2d5a8c 0%, #1e3a5f 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(45, 90, 140, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(45, 90, 140, 0.3);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 12px;
+            background: #f5f5f5;
+            color: #2d5a8c;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .points {
+            display: inline-block;
+            background: linear-gradient(135deg, #2d5a8c, #cf62cd);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 16px;
+        }
+
+        .panel-counter {
+            text-align: center;
+            color: #7d7d7d;
+            font-size: 14px;
+            margin-top: 12px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 16px;
+            }
+
+            .content {
+                padding: 16px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .memory-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="back-btn" onclick="goBack()">←</button>
+            <h1>Seguridad Emocional</h1>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content">
+            <!-- PANEL 1: LECCIONES -->
+            <div class="panel active" id="panel1">
+                <div class="lesson-card">
+                    <h3>📚 Lección 1: ¿Qué es la seguridad emocional?</h3>
+                    <p>La seguridad emocional es tu capacidad para sentirte protegido y cómodo con tus emociones. Es especialmente importante cuando trabajas en la informalidad, donde puedes enfrentar situaciones impredecibles.</p>
+                    <div class="tip">
+                        💡 <strong>Consejo:</strong> Reconoce tus emociones sin juzgarlas. Son mensajeras de información importante.
+                    </div>
+                </div>
+
+                <div class="lesson-card">
+                    <h3>🎯 Lección 2: Identificar tus emociones</h3>
+                    <p>El primer paso para la seguridad emocional es reconocer qué sientes en cada momento. Pregúntate: ¿Estoy feliz, triste, ansioso, enojado o asustado?</p>
+                    <div class="tip">
+                        💡 <strong>Ejercicio:</strong> Detente cada hora y nombra lo que estás sintiendo.
+                    </div>
+                </div>
+
+                <div class="lesson-card">
+                    <h3>🛡️ Lección 3: Estrategias de regulación</h3>
+                    <p>Una vez identifies tus emociones, puedes usar técnicas como respiración profunda, caminar, hablar con alguien de confianza o tomar descansos cortos para manejar mejor cómo te sientes.</p>
+                    <div class="tip">
+                        💡 <strong>Técnica rápida:</strong> Respira profundamente 5 veces cuando sientas que la emoción te abruma.
+                    </div>
+                </div>
+
+                <div class="points">+50 puntos</div>
+                <button class="btn-primary" onclick="goToPanel(2)">Iniciar preguntas →</button>
+                <div class="panel-counter">Panel 1 de 12</div>
+            </div>
+
+            <!-- PANEL 2: PREGUNTA 1 -->
+            <div class="panel" id="panel2">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 1</h4>
+                    <p><strong>¿Cuál es la definición de seguridad emocional?</strong></p>
+                    
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 2)">
+                        A) Nunca sentir emociones negativas
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 2)">
+                        B) Capacidad para reconocer y manejar tus emociones de forma saludable
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 2)">
+                        C) Ignorar completamente lo que sientes
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 2)">
+                        D) Solo pensar en cosas positivas todos los días
+                    </div>
+
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(1)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(3)">Siguiente →</button>
+                </div>
+                <div class="panel-counter">Panel 2 de 12</div>
+            </div>
+
+            <!-- PANEL 3: PREGUNTA 2 -->
+            <div class="panel" id="panel3">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 2</h4>
+                    <p><strong>¿Cuál es el primer paso para desarrollar seguridad emocional?</strong></p>
+                    
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 3)">
+                        A) Ignorar tus sentimientos completamente
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 3)">
+                        B) Reconocer y nombrar lo que estás sintiendo
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 3)">
+                        C) Solo buscar ayuda profesional
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 3)">
+                        D) Evitar todas las situaciones difíciles
+                    </div>
+
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(2)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(4)">Siguiente →</button>
+                </div>
+                <div class="panel-counter">Panel 3 de 12</div>
+            </div>
+
+            <!-- PANEL 4: PREGUNTA 3 -->
+            <div class="panel" id="panel4">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 3</h4>
+                    <p><strong>¿Cuántas emociones básicas existen aproximadamente?</strong></p>
+                    
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 4)">
+                        A) Una (solo felicidad)
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 4)">
+                        B) De 5 a 7 emociones básicas
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 4)">
+                        C) Más de 20
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 4)">
+                        D) Las emociones no se pueden contar
+                    </div>
+
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(3)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(5)">Siguiente →</button>
+                </div>
+                <div class="panel-counter">Panel 4 de 12</div>
+            </div>
+
+            <!-- PANEL 5: PREGUNTA 4 -->
+            <div class="panel" id="panel5">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 4</h4>
+                    <p><strong>¿Cuál es una técnica efectiva para manejar el estrés emocional?</strong></p>
+                    
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 5)">
+                        A) Reprimir todas tus emociones
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 5)">
+                        B) Respiración profunda y pausas regulares
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 5)">
+                        C) Trabajar sin descansos
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 5)">
+                        D) No hablar con nadie sobre tus sentimientos
+                    </div>
+
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(4)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(6)">Siguiente →</button>
+                </div>
+                <div class="panel-counter">Panel 5 de 12</div>
+            </div>
+
+            <!-- PANEL 6: PREGUNTA 5 -->
+            <div class="panel" id="panel6">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 5</h4>
+                    <p><strong>¿Por qué es importante identificar tus emociones?</strong></p>
+                    
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 6)">
+                        A) Para poder controlar a otros
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 6)">
+                        C) No tiene importancia real
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 6)">
+                        B) Para entender tus necesidades y responder de forma apropiada
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 6)">
+                        D) Solo cuando estés muy enfadado
+                    </div>
+
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(5)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(7)">Siguiente →</button>
+                </div>
+                <div class="panel-counter">Panel 6 de 12</div>
+            </div>
+
+            <!-- PANEL 7: PREGUNTA 6 -->
+            <div class="panel" id="panel7">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 6</h4>
+                    <p><strong>¿Cuál es un beneficio de la seguridad emocional en el trabajo informal?</strong></p>
+                    
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 7)">
+                        A) Ganar más dinero automáticamente
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 7)">
+                        B) Manejar mejor las situaciones difíciles y tomar decisiones más claras
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 7)">
+                        C) Nunca sentir preocupación
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 7)">
+                        D) No necesitar descansos
+                    </div>
+
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(6)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(8)">Siguiente →</button>
+                </div>
+                <div class="panel-counter">Panel 7 de 12</div>
+            </div>
+
+            <!-- PANEL 8: PREGUNTA 7 -->
+            <div class="panel" id="panel8">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 7</h4>
+                    <p><strong>¿Qué es la regulación emocional?</strong></p>
+                    
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 8)">
+                        A) Fingir que estás bien cuando no lo estás
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 8)">
+                        B) Habilidad para manejar tus emociones de forma constructiva
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 8)">
+                        C) Dejar que tus emociones controlen tus acciones
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 8)">
+                        D) Eliminar completamente tus sentimientos
+                    </div>
+
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(7)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(9)">Siguiente →</button>
+                </div>
+                <div class="panel-counter">Panel 8 de 12</div>
+            </div>
+
+            <!-- PANEL 9: PREGUNTA 8 -->
+            <div class="panel" id="panel9">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 8</h4>
+                    <p><strong>¿Cuál es una forma segura de expresar emociones difíciles?</strong></p>
+                    
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 9)">
+                        A) Mantenerlas guardadas para siempre
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 9)">
+                        B) Hablar calmadamente con alguien de confianza
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 9)">
+                        C) Desquitarse con otros
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 9)">
+                        D) Ignorarlas completamente
+                    </div>
+
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(8)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(10)">Siguiente →</button>
+                </div>
+                <div class="panel-counter">Panel 9 de 12</div>
+            </div>
+
+            <!-- PANEL 10: PREGUNTA 9 -->
+            <div class="panel" id="panel10">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 9</h4>
+                    <p><strong>¿Cuál es el rol del apoyo social en la seguridad emocional?</strong></p>
+                    
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 10)">
+                        A) Debilita tu capacidad de manejar emociones
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 10)">
+                        B) Fortalece tu seguridad emocional y ayuda a procesar sentimientos
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 10)">
+                        C) No tiene importancia para los adultos mayores
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 10)">
+                        D) Solo es útil en contextos profesionales
+                    </div>
+
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(9)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(11)">Siguiente →</button>
+                </div>
+                <div class="panel-counter">Panel 10 de 12</div>
+            </div>
+
+            <!-- PANEL 11: PREGUNTA 10 -->
+            <div class="panel" id="panel11">
+                <div class="quiz-question">
+                    <h4>❓ Pregunta 10</h4>
+                    <p><strong>¿Cuál es el objetivo principal de la seguridad emocional?</strong></p>
+                    
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 11)">
+                        A) Sentirse superior a otros
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, true, 11)">
+                        B) Vivir con mayor bienestar y tomar mejores decisiones
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 11)">
+                        C) Evitar todas las responsabilidades
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false, 11)">
+                        D) No sentir nada en absoluto
+                    </div>
+
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="goToPanel(10)">← Atrás</button>
+                    <button class="btn-primary" style="flex: 2;" onclick="goToPanel(12)">Siguiente: Juego →</button>
+                </div>
+                <div class="panel-counter">Panel 11 de 12</div>
+            </div>
+
+            <!-- PANEL 12: JUEGO DE MEMORIA -->
+            <div class="panel" id="panel12">
+                <div class="game-container">
+                    <h2 class="game-title">🎮 Encuentra los Pares de Emociones</h2>
+                    <p style="color: #555; margin-bottom: 16px; font-size: 14px;">Empareja cada emoción con su símbolo. ¡Usa tu memoria!</p>
+                    
+                    <div class="game-stats">
+                        <div class="stat-box">
+                            Pares encontrados: <span id="matchCount">0/8</span>
+                        </div>
+                        <div class="stat-box">
+                            Intentos: <span id="attemptCount">0</span>
+                        </div>
+                    </div>
+
+                    <div class="game-message" id="gameMessage"></div>
+
+                    <div class="memory-grid" id="memoryGrid"></div>
+
+                    <button class="btn-primary" onclick="resetMemoryGame()">Reintentar</button>
+                    <button class="btn-primary" style="margin-top: 8px; background: #28a745;" onclick="completeModuleWithGame()">Terminar módulo ✓</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables del juego de memoria
+        let flippedCards = [];
+        let matchedCards = [];
+        let attempts = 0;
+
+        const emotionPairs = [
+            { emoji: '😊', name: 'Felicidad' },
+            { emoji: '😊', name: 'Felicidad' },
+            { emoji: '😢', name: 'Tristeza' },
+            { emoji: '😢', name: 'Tristeza' },
+            { emoji: '😰', name: 'Ansiedad' },
+            { emoji: '😰', name: 'Ansiedad' },
+            { emoji: '😡', name: 'Enojo' },
+            { emoji: '😡', name: 'Enojo' },
+            { emoji: '😴', name: 'Cansancio' },
+            { emoji: '😴', name: 'Cansancio' },
+            { emoji: '🤗', name: 'Amor' },
+            { emoji: '🤗', name: 'Amor' },
+            { emoji: '😮', name: 'Sorpresa' },
+            { emoji: '😮', name: 'Sorpresa' },
+            { emoji: '😐', name: 'Calma' },
+            { emoji: '😐', name: 'Calma' }
+        ];
+
+        function initializeMemoryGame() {
+            const grid = document.getElementById('memoryGrid');
+            grid.innerHTML = '';
+            flippedCards = [];
+            matchedCards = [];
+            attempts = 0;
+            updateGameStats();
+
+            // Mezclar pares
+            const shuffled = emotionPairs.sort(() => Math.random() - 0.5);
+
+            shuffled.forEach((pair, index) => {
+                const card = document.createElement('button');
+                card.className = 'memory-card';
+                card.textContent = '?';
+                card.dataset.emoji = pair.emoji;
+                card.dataset.name = pair.name;
+                card.dataset.index = index;
+                card.onclick = () => flipCard(card);
+                grid.appendChild(card);
+            });
+        }
+
+        function flipCard(card) {
+            if (flippedCards.length >= 2 || flippedCards.includes(card) || matchedCards.includes(card)) {
+                return;
+            }
+
+            card.classList.add('flipped');
+            card.textContent = card.dataset.emoji;
+            flippedCards.push(card);
+
+            if (flippedCards.length === 2) {
+                attempts++;
+                updateGameStats();
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            const isMatch = card1.dataset.emoji === card2.dataset.emoji;
+
+            setTimeout(() => {
+                if (isMatch) {
+                    card1.classList.add('matched');
+                    card2.classList.add('matched');
+                    matchedCards.push(card1, card2);
+                    flippedCards = [];
+
+                    updateGameStats();
+                    document.getElementById('gameMessage').textContent = '✅ ¡Excelente! ¡Encontraste un par!';
+                    document.getElementById('gameMessage').className = 'game-message success';
+
+                    if (matchedCards.length === emotionPairs.length) {
+                        setTimeout(() => {
+                            document.getElementById('gameMessage').textContent = '🎉 ¡Ganaste! ¡Completaste el juego!';
+                            document.getElementById('gameMessage').className = 'game-message success';
+                        }, 500);
+                    }
+                } else {
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                    card1.textContent = '?';
+                    card2.textContent = '?';
+                    flippedCards = [];
+
+                    document.getElementById('gameMessage').textContent = '❌ No coinciden. Sigue intentando.';
+                    document.getElementById('gameMessage').className = 'game-message';
+                }
+            }, 800);
+        }
+
+        function updateGameStats() {
+            document.getElementById('matchCount').textContent = matchedCards.length / 2 + '/8';
+            document.getElementById('attemptCount').textContent = attempts;
+        }
+
+        function resetMemoryGame() {
+            initializeMemoryGame();
+            document.getElementById('gameMessage').textContent = '';
+        }
+
+        // Funciones principales
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        function goToPanel(panelNumber) {
+            document.querySelectorAll('.panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.getElementById('panel' + panelNumber).classList.add('active');
+            const progress = (panelNumber / 12) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+
+            // Inicializar juego cuando se llega al panel 12
+            if (panelNumber === 12) {
+                setTimeout(() => initializeMemoryGame(), 200);
+            }
+
+            window.scrollTo(0, 0);
+        }
+
+        function selectAnswer(element, isCorrect, panelNumber) {
+            const panelElement = document.getElementById('panel' + panelNumber);
+            panelElement.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.style.pointerEvents = 'none';
+            });
+            const feedback = element.parentElement.querySelector('.feedback');
+            setTimeout(() => {
+                if (isCorrect) {
+                    element.classList.add('correct');
+                    feedback.classList.add('success');
+                    feedback.textContent = '✅ ¡Correcto! Excelente respuesta.';
+                } else {
+                    element.classList.add('incorrect');
+                    feedback.classList.add('error');
+                    feedback.textContent = '❌ No es correcto. Lee nuevamente.';
+                }
+            }, 200);
+        }
+
+        function completeModuleWithGame() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                const users = JSON.parse(localStorage.getItem('users'));
+                const user = users[currentUser];
+                
+                // Agregar puntos
+                user.points = (user.points || 0) + 100;
+                
+                // Marcar módulo como completado
+                if (!user.completedModules) {
+                    user.completedModules = [];
+                }
+                if (!user.completedModules.includes('Seguridad emocional')) {
+                    user.completedModules.push('Seguridad emocional');
+                }
+                
+                users[currentUser] = user;
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+            
+            alert('🎉 ¡Excelente trabajo!\n\nHas completado el módulo de Seguridad Emocional.\n\n+100 puntos ganados (50 por lecciones + 50 por juego)');
+            window.location.href = 'index.html';
+        }
+
+        // Inicializar al cargar la página
+        window.addEventListener('load', () => {
+            if (document.getElementById('panel12').classList.contains('active')) {
+                initializeMemoryGame();
+            }
+        });
+    </script>
+</body>
+</html>

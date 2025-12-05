@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 3: Trato con Clientes - SegurSenior</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ea580c 0%, #d84315 50%, #bf360c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(234, 88, 12, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #ea580c 0%, #bf360c 100%);
+            color: white;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        header button {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: white;
+            font-size: 24px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        header button:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+        }
+
+        header h1 {
+            flex: 1;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ea580c, #bf360c);
+            width: 8.3%;
+            transition: width 0.5s ease;
+        }
+
+        .content {
+            padding: 40px;
+            min-height: 500px;
+        }
+
+        .panel {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .panel h2 {
+            color: #ea580c;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .lesson-content {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .lesson-content p {
+            margin-bottom: 20px;
+        }
+
+        .lesson-content .emoji {
+            font-size: 40px;
+            margin: 20px 0;
+        }
+
+        .question {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ea580c;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option {
+            padding: 18px;
+            border: 3px solid #ea580c;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+            background: white;
+            color: #333;
+        }
+
+        .option:hover {
+            background: #ea580c;
+            color: white;
+            transform: translateX(10px);
+        }
+
+        .option.selected {
+            background: #ea580c;
+            color: white;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #ea580c, #bf360c);
+            color: white;
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(234, 88, 12, 0.4);
+        }
+
+        .btn-next:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* MEMORY GAME */
+        .memory-game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+            max-width: 600px;
+        }
+
+        .memory-card {
+            min-height: 120px;
+            background: linear-gradient(135deg, #ea580c, #d84315);
+            border-radius: 12px;
+            cursor: pointer;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: 3px solid #bf360c;
+            user-select: none;
+            text-align: center;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+        }
+
+        .memory-card:hover:not(.flipped) {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(234, 88, 12, 0.5);
+        }
+
+        .memory-card.flipped {
+            background: white;
+            color: #ea580c;
+            font-size: 13px;
+        }
+
+        .memory-card.matched {
+            background: #10b981;
+            color: white;
+            cursor: default;
+        }
+
+        .game-info {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ea580c;
+            text-align: center;
+        }
+
+        .game-title {
+            font-size: 24px;
+            color: #ea580c;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 20px;
+            }
+
+            .panel h2 {
+                font-size: 22px;
+            }
+
+            .memory-grid {
+                grid-template-columns: repeat(1, 1fr);
+                max-width: 100%;
+            }
+
+            .question {
+                font-size: 16px;
+            }
+
+            .option {
+                font-size: 16px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button onclick="goBack()">← Atrás</button>
+            <h1>👥 Trato con Clientes</h1>
+        </header>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content">
+            <!-- PANEL 1: LECCIONES -->
+            <div class="panel active" id="panel1">
+                <h2>🎓 Módulo 3: Trato con Clientes</h2>
+                <div class="lesson-content">
+                    <div class="emoji">💬</div>
+                    <h3 style="color: #ea580c; margin-bottom: 20px;">Lección 1: Comunicación Asertiva</h3>
+                    <p>La asertividad es clave para una buena relación con clientes:</p>
+                    <p>✓ Habla con claridad y confianza<br>
+                    ✓ Expresa tus límites de forma educada<br>
+                    ✓ Escucha activamente al cliente<br>
+                    ✓ Mantén la calma en todo momento<br>
+                    ✓ Sé honesto sobre tus servicios</p>
+
+                    <div class="emoji">😤</div>
+                    <h3 style="color: #ea580c; margin-bottom: 20px;">Lección 2: Manejo de Clientes Difíciles</h3>
+                    <p>Estrategias para lidiar con situaciones complicadas:</p>
+                    <p>✓ No tomes el comportamiento de forma personal<br>
+                    ✓ Respira profundo antes de responder<br>
+                    ✓ Busca soluciones, no conflictos<br>
+                    ✓ Pide ayuda si la situación se torna violenta<br>
+                    ✓ Documenta los incidentes importantes</p>
+
+                    <div class="emoji">🚦</div>
+                    <h3 style="color: #ea580c; margin-bottom: 20px;">Lección 3: Establecer Límites</h3>
+                    <p>Tus límites son derechos que debes proteger:</p>
+                    <p>✓ Define tu horario de trabajo claramente<br>
+                    ✓ No aceptes pagos por debajo del justo<br>
+                    ✓ Rechaza tareas peligrosas o ilegales<br>
+                    ✓ Pide respeto hacia tu persona<br>
+                    ✓ Retírate de situaciones abusivas</p>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(2)">Siguiente →</button>
+                </div>
+            </div>
+
+            <!-- PANEL 2-11: PREGUNTAS -->
+            <div class="panel" id="panel2">
+                <div class="question">❓ Pregunta 1: ¿Qué es comunicación asertiva?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Gritar al cliente</div>
+                    <div class="option" onclick="selectAnswer(this)">Hablar con claridad y expresar límites educadamente</div>
+                    <div class="option" onclick="selectAnswer(this)">Mentir sobre tus servicios</div>
+                    <div class="option" onclick="selectAnswer(this)">No expresar tus opiniones</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(1)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(3)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel3">
+                <div class="question">❓ Pregunta 2: ¿Cómo debes responder ante un cliente difícil?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Con agresión</div>
+                    <div class="option" onclick="selectAnswer(this)">Con calma y buscando soluciones</div>
+                    <div class="option" onclick="selectAnswer(this)">Ignorándolo completamente</div>
+                    <div class="option" onclick="selectAnswer(this)">Siendo irrespetuoso</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(2)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(4)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel4">
+                <div class="question">❓ Pregunta 3: ¿Es importante establecer límites con clientes?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">No, nunca</div>
+                    <div class="option" onclick="selectAnswer(this)">Sí, es fundamental para tu bienestar</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo si eres hombre</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo después de 5 años</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(3)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(5)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel5">
+                <div class="question">❓ Pregunta 4: ¿Debes aceptar un pago injusto?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Sí, siempre</div>
+                    <div class="option" onclick="selectAnswer(this)">No, tienes derecho a un salario justo</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo si tienes hambre</div>
+                    <div class="option" onclick="selectAnswer(this)">Depende del color del cliente</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(4)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(6)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel6">
+                <div class="question">❓ Pregunta 5: ¿Qué debes hacer si te sientes en peligro?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Aguantar sin decir nada</div>
+                    <div class="option" onclick="selectAnswer(this)">Pedir ayuda y retirarte de la situación</div>
+                    <div class="option" onclick="selectAnswer(this)">Responder con violencia</div>
+                    <div class="option" onclick="selectAnswer(this)">Ignorar la situación</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(5)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(7)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel7">
+                <div class="question">❓ Pregunta 6: ¿Es tu responsabilidad escuchar al cliente?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">No, nunca</div>
+                    <div class="option" onclick="selectAnswer(this)">Sí, escuchar activamente mejora la relación</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo si es amable</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo en cliente VIP</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(6)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(8)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel8">
+                <div class="question">❓ Pregunta 7: ¿Debes realizar tareas peligrosas o ilegales?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Sí, por dinero</div>
+                    <div class="option" onclick="selectAnswer(this)">No, tienes derecho a rechazarlas</div>
+                    <div class="option" onclick="selectAnswer(this)">Tal vez, si paga bien</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo los lunes</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(7)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(9)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel9">
+                <div class="question">❓ Pregunta 8: ¿Cómo debes establecer tu horario?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Sin definir, según lo que el cliente quiera</div>
+                    <div class="option" onclick="selectAnswer(this)">De forma clara y comunicándolo al cliente</div>
+                    <div class="option" onclick="selectAnswer(this)">Trabajar 24/7</div>
+                    <div class="option" onclick="selectAnswer(this)">No tener horarios nunca</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(8)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(10)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel10">
+                <div class="question">❓ Pregunta 9: ¿Debes documentar incidentes importantes?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">No, es una pérdida de tiempo</div>
+                    <div class="option" onclick="selectAnswer(this)">Sí, para tener prueba de lo sucedido</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo si pierdes dinero</div>
+                    <div class="option" onclick="selectAnswer(this)">Nunca es importante</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(9)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(11)">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="panel" id="panel11">
+                <div class="question">❓ Pregunta 10: ¿Cuándo debes respirar profundo en una situación conflictiva?</div>
+                <div class="options">
+                    <div class="option" onclick="selectAnswer(this)">Nunca</div>
+                    <div class="option" onclick="selectAnswer(this)">Antes de responder para mantener la calma</div>
+                    <div class="option" onclick="selectAnswer(this)">Solo si es emergencia</div>
+                    <div class="option" onclick="selectAnswer(this)">Después de discutir</div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(10)">← Anterior</button>
+                    <button class="btn-next" onclick="goToPanel(12)">Siguiente →</button>
+                </div>
+            </div>
+
+            <!-- PANEL 12: JUEGO - MEMORY GAME -->
+            <div class="panel" id="panel12">
+                <div class="game-title">🎮 Juego Final: Memoria - Situaciones y Respuestas</div>
+                <p style="text-align: center; margin-bottom: 20px; font-size: 16px;">Empareja cada situación conflictiva con la respuesta apropiada.</p>
+                
+                <div style="text-align: center;">
+                    <div class="game-info" id="matchesInfo">Emparejamientos: 0/4</div>
+                    <div class="memory-grid" id="memoryGrid"></div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-next" onclick="goToPanel(11)">← Anterior</button>
+                    <button class="btn-next" onclick="completeModuleWithGame()">Completar Módulo ✓</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPanel = 1;
+        let selectedAnswers = {};
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+
+        const memoryPairs = [
+            { pair: 'Cliente agresivo', label: 'Responder con calma' },
+            { pair: 'Pago muy bajo', label: 'Rechazar y negociar' },
+            { pair: 'Cliente insultante', label: 'Buscar ayuda' },
+            { pair: 'Solicitud ilegal', label: 'Rechazar claramente' },
+            { pair: 'Cliente agresivo', label: 'Responder con calma' },
+            { pair: 'Pago muy bajo', label: 'Rechazar y negociar' },
+            { pair: 'Cliente insultante', label: 'Buscar ayuda' },
+            { pair: 'Solicitud ilegal', label: 'Rechazar claramente' }
+        ];
+
+        function goBack() {
+            if (confirm('¿Deseas volver atrás y perder el progreso?')) {
+                window.history.back();
+            }
+        }
+
+        function goToPanel(panelNumber) {
+            document.getElementById(`panel${currentPanel}`).classList.remove('active');
+            currentPanel = panelNumber;
+            document.getElementById(`panel${currentPanel}`).classList.add('active');
+            updateProgress();
+            
+            if (currentPanel === 12) {
+                initMemoryGame();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateProgress() {
+            const progress = (currentPanel / 12) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function selectAnswer(element) {
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedAnswers[currentPanel] = element.textContent;
+        }
+
+        function initMemoryGame() {
+            const grid = document.getElementById('memoryGrid');
+            grid.innerHTML = '';
+            memoryCards = [...memoryPairs].sort(() => Math.random() - 0.5);
+            matchedPairs = 0;
+            flippedCards = [];
+
+            memoryCards.forEach((card, index) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = 'memory-card';
+                cardEl.dataset.index = index;
+                cardEl.dataset.pair = card.pair;
+                cardEl.textContent = '?';
+                cardEl.onclick = () => flipCard(cardEl, index);
+                grid.appendChild(cardEl);
+            });
+        }
+
+        function flipCard(cardEl, index) {
+            if (cardEl.classList.contains('flipped') || cardEl.classList.contains('matched') || flippedCards.length >= 2) {
+                return;
+            }
+
+            cardEl.classList.add('flipped');
+            cardEl.textContent = memoryCards[index].pair || memoryCards[index].label;
+            flippedCards.push({ el: cardEl, index: index, data: memoryCards[index] });
+
+            if (flippedCards.length === 2) {
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            
+            if (card1.data.pair === card2.data.pair) {
+                card1.el.classList.add('matched');
+                card2.el.classList.add('matched');
+                matchedPairs++;
+                document.getElementById('matchesInfo').textContent = `Emparejamientos: ${matchedPairs}/4`;
+                flippedCards = [];
+            } else {
+                setTimeout(() => {
+                    card1.el.classList.remove('flipped');
+                    card2.el.classList.remove('flipped');
+                    card1.el.textContent = '?';
+                    card2.el.textContent = '?';
+                    flippedCards = [];
+                }, 800);
+            }
+        }
+
+        function completeModuleWithGame() {
+            if (matchedPairs >= 3) {
+                const currentUser = localStorage.getItem('currentUser');
+                if (currentUser) {
+                    const users = JSON.parse(localStorage.getItem('users'));
+                    const user = users[currentUser];
+                    
+                    user.points = (user.points || 0) + 100;
+                    
+                    if (!user.completedModules) {
+                        user.completedModules = [];
+                    }
+                    if (!user.completedModules.includes('Trato con clientes')) {
+                        user.completedModules.push('Trato con clientes');
+                    }
+                    
+                    users[currentUser] = user;
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+                
+                alert('🎉 ¡Fantástico! Has completado el módulo de Trato con Clientes.\n\nRecuerda: Tu dignidad y seguridad siempre vienen primero.\n\n+100 puntos ganados');
+                window.location.href = 'index.html';
+            } else {
+                alert('Sigue emparejando tarjetas para completar el módulo.');
+            }
+        }
+
+        updateProgress();
+    </script>
+</body>
+</html>

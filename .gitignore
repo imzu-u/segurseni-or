@@ -1,0 +1,31 @@
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Archivos temporales
+*.tmp
+*.temp
+*.log
+
+# Node modules (si decides usar npm en el futuro)
+node_modules/
+package-lock.json
+
+# Archivos de editor
+*.swp
+*.swo
+*~
+.project
+.classpath
+
+# Archivos de compilación
+*.o
+*.pyc
+*.class
+
+# Archivos comprimidos
+*.zip
+*.rar
+*.7z
