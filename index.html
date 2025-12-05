@@ -704,7 +704,7 @@
 
             <div class="comunidad-section">
                 <div class="comunidad-label">Comunidad y apoyo</div>
-                <button class="btn-comunidad" onclick="openModule('Comunidad')">
+                <button class="btn-comunidad" onclick="openChat()">
                     <span>💬 Sala de Amigos</span>
                     <span class="arrow">→</span>
                 </button>
@@ -1018,6 +1018,10 @@
             } else {
                 alert('Módulo no encontrado');
             }
+        }
+
+        function openChat() {
+            window.location.href = 'sala-amigos.html';
         }
 
         function openEmergency() {
